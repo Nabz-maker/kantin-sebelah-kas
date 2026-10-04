@@ -86,13 +86,23 @@ export async function PATCH(req) {
     where: { id },
     data: { status, paidAt: status === "lunas" ? new Date() : null },
   });
-  // Jika lunas → catat pemasukan otomatis
+  // Jika lunas → catat pemasukan otomatis; jika direset/ubah → hapus transaksi yang dulu dibuat
+  const expectedDesc = p.week ? `Pembayaran kas minggu ke-${p.week} ${p.month}/${p.year}` : `Pembayaran kas ${p.month}/${p.year}`;
   if (status === "lunas") {
-    await prisma.transaction.create({
-      data: {
-        userId: s.uid, type: "pemasukan", category: "Iuran Kas", amount: p.amount,
-        description: p.week ? `Pembayaran kas minggu ke-${p.week} ${p.month}/${p.year}` : `Pembayaran kas ${p.month}/${p.year}`, transactionDate: new Date(),
-      },
+    const exists = await prisma.transaction.findFirst({
+      where: { type: "pemasukan", category: { in: ["Iuran Kas", "Iuran Bulanan"] }, amount: p.amount, description: expectedDesc },
+    });
+    if (!exists) {
+      await prisma.transaction.create({
+        data: {
+          userId: s.uid, type: "pemasukan", category: "Iuran Kas", amount: p.amount,
+          description: expectedDesc, transactionDate: new Date(),
+        },
+      });
+    }
+  } else {
+    await prisma.transaction.deleteMany({
+      where: { type: "pemasukan", category: { in: ["Iuran Kas", "Iuran Bulanan"] }, amount: p.amount, description: expectedDesc },
     });
   }
   return NextResponse.json({ ok: true, p });
