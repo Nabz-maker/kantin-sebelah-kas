@@ -9,7 +9,7 @@ export default function Profil() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", currentPassword: "", newPassword: "" });
 
   useEffect(() => {
-    fetch("/api/auth/me").then((r) => r.json()).then((d) => { setUser(d.user); setForm((f) => ({ ...f, name: d.user.name, email: d.user.email, phone: d.user.phone || "" })); });
+    fetch("/api/auth/me").then((r) => r.json()).then((d) => { setUser(d.user); setForm((f) => ({ ...f, name: d.user.name, email: d.user.email, phone: d.user.phone || "", avatar: d.user.avatar || null })); });
   }, []);
 
   if (!user) return <Spinner />;
@@ -26,14 +26,16 @@ export default function Profil() {
 
   async function submit(e) {
     e.preventDefault();
-    const payload = { name: form.name, email: form.email, phone: form.phone, avatar: form.avatar };
+    const payload = { name: form.name, email: form.email, phone: form.phone };
+    if (form.avatar) payload.avatar = form.avatar;
     if (form.newPassword) { payload.newPassword = form.newPassword; payload.currentPassword = form.currentPassword; }
     const res = await fetch(`/api/members/${user.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     const d = await res.json();
     if (!res.ok) return toast(d.error, false);
     toast("Profil berhasil diperbarui.");
     setUser(d.user);
-    setForm((f) => ({ ...f, currentPassword: "", newPassword: "" }));
+    setForm((f) => ({ ...f, currentPassword: "", newPassword: "", avatar: d.user.avatar || null }));
+    window.dispatchEvent(new Event("user-updated"));
   }
 
   return (
@@ -42,7 +44,7 @@ export default function Profil() {
       <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="flex items-center gap-4">
           <span className="grid h-16 w-16 place-items-center rounded-2xl bg-indigo-100 text-xl font-bold text-indigo-700">
-            {user.avatar ? <img src={user.avatar} alt="" className="h-16 w-16 rounded-2xl object-cover" /> : user.name[0].toUpperCase()}
+            {form.avatar || user.avatar ? <img src={form.avatar || user.avatar} alt="" className="h-16 w-16 rounded-2xl object-cover" /> : user.name[0].toUpperCase()}
           </span>
           <div>
             <p className="text-lg font-bold">{user.name}</p>
@@ -53,7 +55,7 @@ export default function Profil() {
       </div>
 
       <form onSubmit={submit} className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div><label className={labelCls}>Foto Profil</label><input type="file" accept="image/*" onChange={onAvatar} className="text-sm" /></div>
+        <div><label className={labelCls}>Foto Profil</label><input type="file" accept="image/*" onChange={onAvatar} className="text-sm" />{form.avatar && <p className="mt-1 text-xs text-slate-400">Foto baru terpilih — klik Simpan Perubahan untuk menyimpan.</p>}</div>
         <div><label className={labelCls}>Nama</label><input className={inputCls} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></div>
         <div><label className={labelCls}>Email</label><input type="email" className={inputCls} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></div>
         <div><label className={labelCls}>Nomor HP</label><input className={inputCls} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} /></div>

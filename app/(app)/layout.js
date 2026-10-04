@@ -15,7 +15,10 @@ export default function AppLayout({ children }) {
   const menuRef = useRef(null);
 
   useEffect(() => {
-    fetch("/api/auth/me").then((r) => r.json()).then((d) => { if (!d.user) router.push("/login"); else setUser(d.user); });
+    const load = () => fetch("/api/auth/me").then((r) => r.json()).then((d) => { if (!d.user) router.push("/login"); else setUser(d.user); });
+    load();
+    window.addEventListener("user-updated", load);
+    return () => window.removeEventListener("user-updated", load);
   }, [router]);
 
   useEffect(() => {
