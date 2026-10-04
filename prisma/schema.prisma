@@ -43,12 +43,13 @@ model CashPayment {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   month     Int
   year      Int
+  week      Int      @default(0) // 0 = bulanan, 1-53 = minggu ke-
   amount    Int
   status    String   @default("belum") // lunas | belum | terlambat
   paidAt    DateTime?
   createdAt DateTime @default(now())
 
-  @@unique([userId, month, year])
+  @@unique([userId, month, year, week])
 }
 
 model Category {

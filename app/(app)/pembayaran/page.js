@@ -9,7 +9,7 @@ export default function Pembayaran() {
   const [items, setItems] = useState(null);
   const now = new Date();
   const [filters, setFilters] = useState({ month: now.getMonth() + 1, year: now.getFullYear(), status: "semua", name: "" });
-  const [gen, setGen] = useState({ month: now.getMonth() + 1, year: now.getFullYear() });
+  const [gen, setGen] = useState({ month: now.getMonth() + 1, year: now.getFullYear(), period: "bulanan", week: 1 });
 
   const load = useCallback(() => {
     const qs = new URLSearchParams();
@@ -29,8 +29,10 @@ export default function Pembayaran() {
   }
 
   async function generate() {
-    const res = await fetch("/api/payments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(gen) });
+    const payload = { month: gen.month, year: gen.year, week: gen.period === "mingguan" ? Number(gen.week) : 0 };
+    const res = await fetch("/api/payments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     const d = await res.json();
+    if (!res.ok) return toast(d.error || "Gagal membuat tagihan.", false);
     toast(`Tagihan dibuat untuk ${d.created} anggota.`);
     load();
   }
@@ -43,6 +45,8 @@ export default function Pembayaran() {
 
       {isAdmin && (
         <div className="flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div><label className="mb-1 block text-xs font-semibold text-slate-500">Periode</label><select className={inputCls} value={gen.period} onChange={(e) => setGen({ ...gen, period: e.target.value })}><option value="bulanan">Bulanan</option><option value="mingguan">Mingguan</option></select></div>
+          {gen.period === "mingguan" && <div><label className="mb-1 block text-xs font-semibold text-slate-500">Minggu ke-</label><input type="number" min="1" max="53" className={inputCls} value={gen.week} onChange={(e) => setGen({ ...gen, week: e.target.value })} /></div>}
           <div><label className="mb-1 block text-xs font-semibold text-slate-500">Bulan</label><input type="number" min="1" max="12" className={inputCls} value={gen.month} onChange={(e) => setGen({ ...gen, month: e.target.value })} /></div>
           <div><label className="mb-1 block text-xs font-semibold text-slate-500">Tahun</label><input type="number" className={inputCls} value={gen.year} onChange={(e) => setGen({ ...gen, year: e.target.value })} /></div>
           <button onClick={generate} className={btnPrimary}>Buat Tagihan</button>
@@ -72,7 +76,7 @@ export default function Pembayaran() {
                 {items.map((p) => (
                   <tr key={p.id} className="border-t border-slate-50">
                     <td className="px-5 py-3 font-medium">{p.user?.name}</td>
-                    <td className="px-5 py-3 text-slate-500">{bulanName(p.month)} {p.year}</td>
+                    <td className="px-5 py-3 text-slate-500">{p.week ? `Minggu ke-${p.week}, ` : ""}{bulanName(p.month)} {p.year}</td>
                     <td className="px-5 py-3 font-semibold">{rupiah(p.amount)}</td>
                     <td className="px-5 py-3">{statusBadge(p.status)}</td>
                     <td className="px-5 py-3 text-slate-500">{formatDate(p.paidAt)}</td>

@@ -9,12 +9,14 @@ export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const month = searchParams.get("month");
   const year = searchParams.get("year");
+  const week = searchParams.get("week");
   const status = searchParams.get("status");
   const name = searchParams.get("name") || "";
 
   const where = {
     ...(month ? { month: Number(month) } : {}),
     ...(year ? { year: Number(year) } : {}),
+    ...(week !== null && week !== "" ? { week: Number(week) } : {}),
     ...(status && status !== "semua" ? { status } : {}),
     ...(s.role !== "admin" ? { userId: s.uid } : {}),
     ...(name ? { user: { name: { contains: name } } } : {}),
@@ -22,7 +24,7 @@ export async function GET(req) {
   const items = await prisma.cashPayment.findMany({
     where,
     include: { user: { select: { name: true, username: true } } },
-    orderBy: [{ year: "desc" }, { month: "desc" }, { user: { name: "asc" } }],
+    orderBy: [{ year: "desc" }, { month: "desc" }, { week: "asc" }, { user: { name: "asc" } }],
   });
   return NextResponse.json({ items });
 }
@@ -31,16 +33,17 @@ export async function GET(req) {
 export async function POST(req) {
   const s = await getSession();
   if (!s || s.role !== "admin") return NextResponse.json({ error: "Hanya admin." }, { status: 403 });
-  const { month, year } = await req.json().catch(() => ({}));
+  const { month, year, week } = await req.json().catch(() => ({}));
   const m = Number(month), y = Number(year);
-  if (!m || !y) return NextResponse.json({ error: "Bulan dan tahun wajib." }, { status: 400 });
+  const w = week === undefined || week === null || week === "" ? 0 : Number(week);
+  if (!m || !y || (w < 0 || w > 53)) return NextResponse.json({ error: "Bulan, tahun, dan minggu wajib valid." }, { status: 400 });
   const setting = await prisma.setting.findUnique({ where: { id: "singleton" } });
   const amount = setting?.cashAmount ?? 50000;
   const members = await prisma.user.findMany({ where: { role: "member", status: "aktif" } });
   let created = 0;
   for (const u of members) {
-    const exists = await prisma.cashPayment.findUnique({ where: { userId_month_year: { userId: u.id, month: m, year: y } } });
-    if (!exists) { await prisma.cashPayment.create({ data: { userId: u.id, month: m, year: y, amount } }); created++; }
+    const exists = await prisma.cashPayment.findUnique({ where: { userId_month_year_week: { userId: u.id, month: m, year: y, week: w } } });
+    if (!exists) { await prisma.cashPayment.create({ data: { userId: u.id, month: m, year: y, week: w, amount } }); created++; }
   }
   return NextResponse.json({ ok: true, created });
 }
@@ -59,8 +62,8 @@ export async function PATCH(req) {
   if (status === "lunas") {
     await prisma.transaction.create({
       data: {
-        userId: s.uid, type: "pemasukan", category: "Iuran Bulanan", amount: p.amount,
-        description: `Pembayaran kas ${p.month}/${p.year}`, transactionDate: new Date(),
+        userId: s.uid, type: "pemasukan", category: "Iuran Kas", amount: p.amount,
+        description: p.week ? `Pembayaran kas minggu ke-${p.week} ${p.month}/${p.year}` : `Pembayaran kas ${p.month}/${p.year}`, transactionDate: new Date(),
       },
     });
   }
