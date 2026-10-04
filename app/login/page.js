@@ -52,7 +52,7 @@ export default function LoginPage() {
   return (
     <div className="grid min-h-screen place-items-center bg-[#F8FAFC] px-4">
       <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-        <Link href="/" className="mb-6 flex items-center justify-center gap-2 text-xl font-extrabold"><span className="grid h-9 w-9 place-items-center rounded-xl bg-indigo-600 text-white">K</span> Kantin Sebelah</Link>
+        <Link href="/" className="mb-6 flex items-center justify-center gap-2 text-xl font-extrabold"><img src="/logo.png" alt="Logo" className="h-9 w-9 rounded-xl object-cover" /> Kantin Sebelah</Link>
         <Suspense fallback={null}><LoginForm /></Suspense>
       </div>
     </div>

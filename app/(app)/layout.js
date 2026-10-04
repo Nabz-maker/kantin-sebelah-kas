@@ -55,7 +55,7 @@ export default function AppLayout({ children }) {
       {/* Sidebar desktop */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col border-r border-slate-200 bg-white md:flex">
         <div className="flex h-16 items-center gap-2.5 border-b border-slate-100 px-5">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-indigo-600 font-bold text-white">K</div>
+          <img src="/logo.png" alt="Logo" className="h-9 w-9 rounded-xl object-cover" />
           <p className="text-lg font-extrabold tracking-tight text-slate-800">Kantin Sebelah</p>
         </div>
         <nav className="flex-1 space-y-1 p-3">

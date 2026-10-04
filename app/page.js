@@ -7,7 +7,7 @@ export default function Landing() {
       <header className="sticky top-0 z-20 border-b border-slate-200/70 bg-white/80 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <div className="flex items-center gap-2.5">
-            <div className="grid h-9 w-9 place-items-center rounded-xl bg-indigo-600 font-bold text-white">K</div>
+            <img src="/logo.png" alt="Logo" className="h-9 w-9 rounded-xl object-cover" />
             <p className="text-lg font-extrabold tracking-tight">Kantin Sebelah</p>
           </div>
           <div className="flex items-center gap-2">
