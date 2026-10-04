@@ -7,17 +7,33 @@ import { rupiah, formatDate } from "@/lib/utils";
 export default function Dashboard() {
   const [range, setRange] = useState("month");
   const [data, setData] = useState(null);
+  const [unpaid, setUnpaid] = useState([]);
 
   useEffect(() => {
     setData(null);
     fetch(`/api/dashboard?range=${range}`).then((r) => r.json()).then(setData);
   }, [range]);
 
+  useEffect(() => {
+    const now = new Date();
+    fetch(`/api/payments?month=${now.getMonth() + 1}&year=${now.getFullYear()}`)
+      .then((r) => r.json())
+      .then((d) => setUnpaid((d.items || []).filter((p) => p.status !== "lunas")));
+  }, []);
+
   if (!data) return <Spinner />;
   const { stats, chart, trend, recent } = data;
 
+  const bulanIni = new Date().toLocaleDateString("id-ID", { month: "long", year: "numeric" });
+
   return (
     <div className="space-y-6">
+      {unpaid.length > 0 && (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+          <p className="font-bold">Pengingat Pembayaran Kas</p>
+          <p className="mt-1">Anda masih memiliki {unpaid.length} tagihan kas bulan {bulanIni} yang belum lunas. Silakan lakukan pembayaran.</p>
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-extrabold tracking-tight">Dashboard</h1>
         <div className="flex gap-1 rounded-xl bg-slate-100 p-1 text-xs font-semibold">
