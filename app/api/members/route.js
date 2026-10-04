@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(req) {
   const s = await getSession();
-  if (!s || s.role !== "admin") return NextResponse.json({ error: "Hanya admin." }, { status: 403 });
+  if (!s) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { searchParams } = new URL(req.url);
   const q = searchParams.get("q") || "";
   const role = searchParams.get("role");
@@ -16,7 +16,9 @@ export async function GET(req) {
     ...(status && status !== "semua" ? { status } : {}),
   };
   const users = await prisma.user.findMany({ where, orderBy: { createdAt: "desc" } });
-  return NextResponse.json({ items: users.map(({ passwordHash, ...u }) => u) });
+  if (s.role === "admin") return NextResponse.json({ items: users.map(({ passwordHash, ...u }) => u) });
+  // Untuk member biasa: hanya data publik
+  return NextResponse.json({ items: users.map((u) => ({ id: u.id, name: u.name, avatar: u.avatar, role: u.role, status: u.status, createdAt: u.createdAt })) });
 }
 
 export async function POST(req) {

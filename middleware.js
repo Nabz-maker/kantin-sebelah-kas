@@ -3,7 +3,7 @@ import { jwtVerify } from "jose";
 
 const SECRET = new TextEncoder().encode(process.env.SESSION_SECRET || "kaskita-dev-secret");
 const PROTECTED = ["/dashboard", "/transaksi", "/pembayaran", "/anggota", "/laporan", "/profil", "/pengaturan"];
-const ADMIN_ONLY = ["/anggota", "/pengaturan"];
+const ADMIN_ONLY = ["/pengaturan"];
 
 export async function middleware(req) {
   const { pathname } = req.nextUrl;

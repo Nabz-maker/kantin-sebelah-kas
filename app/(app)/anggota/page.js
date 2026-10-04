@@ -11,6 +11,10 @@ export default function Anggota() {
   const [editing, setEditing] = useState(null);
   const [detail, setDetail] = useState(null);
   const [confirmDel, setConfirmDel] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => { fetch("/api/auth/me").then((r) => r.json()).then((d) => setUser(d.user)); }, []);
+  const isAdmin = user?.role === "admin";
 
   const load = useCallback(() => {
     const qs = new URLSearchParams();
@@ -47,7 +51,7 @@ export default function Anggota() {
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-extrabold tracking-tight">Manajemen Anggota</h1>
-        <button onClick={() => { setEditing(null); setShowForm(true); }} className={btnPrimary}>+ Tambah Anggota</button>
+        {isAdmin && <button onClick={() => { setEditing(null); setShowForm(true); }} className={btnPrimary}>+ Tambah Anggota</button>}
       </div>
 
       <div className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:grid-cols-3">
@@ -70,7 +74,7 @@ export default function Anggota() {
                 </span>
                 <div className="min-w-0">
                   <p className="truncate font-bold">{u.name}</p>
-                  <p className="truncate text-xs text-slate-400">{u.email}</p>
+                  <p className="truncate text-xs text-slate-400">{u.email || u.role}</p>
                 </div>
               </div>
               <div className="mt-3 flex flex-wrap gap-1.5">
@@ -79,9 +83,9 @@ export default function Anggota() {
               </div>
               <p className="mt-3 text-xs text-slate-400">Bergabung {formatDate(u.createdAt)}</p>
               <div className="mt-4 flex gap-2 text-sm">
-                <button onClick={() => setDetail(u)} className="font-semibold text-slate-500">Detail</button>
-                <button onClick={() => { setEditing(u); setShowForm(true); }} className="font-semibold text-indigo-600">Edit</button>
-                <button onClick={() => setConfirmDel(u)} className="font-semibold text-rose-600">Hapus</button>
+                {isAdmin && <button onClick={() => setDetail(u)} className="font-semibold text-slate-500">Detail</button>}
+                {isAdmin && <button onClick={() => { setEditing(u); setShowForm(true); }} className="font-semibold text-indigo-600">Edit</button>}
+                {isAdmin && <button onClick={() => setConfirmDel(u)} className="font-semibold text-rose-600">Hapus</button>}
               </div>
             </div>
           ))}

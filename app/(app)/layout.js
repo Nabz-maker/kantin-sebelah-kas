@@ -33,7 +33,7 @@ export default function AppLayout({ children }) {
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/transaksi", label: "Transaksi", icon: ArrowLeftRight },
     { href: "/pembayaran", label: "Pembayaran Kas", icon: Wallet },
-    { href: "/anggota", label: "Anggota", icon: Users, admin: true },
+    { href: "/anggota", label: "Anggota", icon: Users },
     { href: "/laporan", label: "Laporan", icon: FileBarChart },
     { href: "/profil", label: "Profil", icon: UserCircle },
     { href: "/pengaturan", label: "Pengaturan", icon: Settings, admin: true },
