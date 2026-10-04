@@ -19,6 +19,11 @@ export default function Pembayaran() {
 
   useEffect(() => { fetch("/api/auth/me").then((r) => r.json()).then((d) => setUser(d.user)); }, []);
   useEffect(load, [load]);
+  useEffect(() => {
+    const h = () => load();
+    window.addEventListener("refresh-data", h);
+    return () => window.removeEventListener("refresh-data", h);
+  }, [load]);
 
   const isAdmin = user?.role === "admin";
 

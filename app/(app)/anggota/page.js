@@ -18,6 +18,11 @@ export default function Anggota() {
     fetch(`/api/members?${qs}`).then((r) => r.json()).then((d) => setItems(d.items || []));
   }, [filters]);
   useEffect(load, [load]);
+  useEffect(() => {
+    const h = () => load();
+    window.addEventListener("refresh-data", h);
+    return () => window.removeEventListener("refresh-data", h);
+  }, [load]);
 
   async function save(values) {
     const url = editing ? `/api/members/${editing.id}` : "/api/members";

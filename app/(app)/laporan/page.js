@@ -9,8 +9,10 @@ export default function Laporan() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch("/api/dashboard?range=month").then((r) => r.json()).then(setData);
-    fetch("/api/transactions?page=1").then((r) => r.json());
+    const refresh = () => fetch("/api/dashboard?range=month").then((r) => r.json()).then(setData);
+    refresh();
+    window.addEventListener("refresh-data", refresh);
+    return () => window.removeEventListener("refresh-data", refresh);
   }, []);
 
   if (!data) return <Spinner />;

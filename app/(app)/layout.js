@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { LayoutDashboard, ArrowLeftRight, Wallet, Users, FileBarChart, UserCircle, Settings, LogOut, Search, Bell, Menu, X } from "lucide-react";
 import { toast } from "@/components/ToastHost";
+import AutoRefresh from "@/components/AutoRefresh";
 
 export default function AppLayout({ children }) {
   const pathname = usePathname();
@@ -116,6 +117,7 @@ export default function AppLayout({ children }) {
       </header>
 
       <main className="px-4 pb-24 pt-6 md:px-8 md:pb-10">{children}</main>
+      <AutoRefresh />
 
       {/* Bottom nav mobile */}
       <nav className="fixed inset-x-0 bottom-0 z-40 flex justify-around border-t border-slate-200 bg-white py-2 md:hidden">

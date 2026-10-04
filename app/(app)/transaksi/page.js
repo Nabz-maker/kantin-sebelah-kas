@@ -24,6 +24,11 @@ function Transaksi() {
   useEffect(() => { fetch("/api/auth/me").then((r) => r.json()).then((d) => setUser(d.user)); }, []);
   useEffect(() => { fetch("/api/categories").then((r) => r.json()).then((d) => setCats(d.items || [])); }, []);
   useEffect(load, [load]);
+  useEffect(() => {
+    const h = () => load();
+    window.addEventListener("refresh-data", h);
+    return () => window.removeEventListener("refresh-data", h);
+  }, [load]);
 
   const isAdmin = user?.role === "admin";
 

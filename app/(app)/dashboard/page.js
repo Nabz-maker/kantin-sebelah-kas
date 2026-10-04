@@ -10,16 +10,16 @@ export default function Dashboard() {
   const [unpaid, setUnpaid] = useState([]);
 
   useEffect(() => {
+    const refresh = () => {
+      fetch(`/api/dashboard?range=${range}`).then((r) => r.json()).then(setData);
+      const now = new Date();
+      fetch(`/api/payments?month=${now.getMonth() + 1}&year=${now.getFullYear()}`).then((r) => r.json()).then((d) => setUnpaid((d.items || []).filter((p) => p.status !== "lunas")));
+    };
     setData(null);
-    fetch(`/api/dashboard?range=${range}`).then((r) => r.json()).then(setData);
+    refresh();
+    window.addEventListener("refresh-data", refresh);
+    return () => window.removeEventListener("refresh-data", refresh);
   }, [range]);
-
-  useEffect(() => {
-    const now = new Date();
-    fetch(`/api/payments?month=${now.getMonth() + 1}&year=${now.getFullYear()}`)
-      .then((r) => r.json())
-      .then((d) => setUnpaid((d.items || []).filter((p) => p.status !== "lunas")));
-  }, []);
 
   if (!data) return <Spinner />;
   const { stats, chart, trend, recent } = data;
