@@ -37,6 +37,13 @@ export default function Pembayaran() {
     load();
   }
 
+  async function removePayment(id) {
+    if (!confirm("Hapus riwayat pembayaran ini?")) return;
+    const res = await fetch("/api/payments", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+    if (res.ok) { toast("Riwayat pembayaran dihapus."); load(); }
+    else { const d = await res.json(); toast(d.error || "Gagal menghapus.", false); }
+  }
+
   const statusBadge = (s) => s === "lunas" ? <Badge color="green">Sudah Bayar</Badge> : s === "terlambat" ? <Badge color="orange">Terlambat</Badge> : <Badge color="red">Belum Bayar</Badge>;
 
   return (
@@ -84,6 +91,7 @@ export default function Pembayaran() {
                       {p.status !== "lunas" && <button onClick={() => setStatus(p.id, "lunas")} className="mr-2 text-sm font-semibold text-emerald-600">Tandai Lunas</button>}
                       {p.status === "belum" && <button onClick={() => setStatus(p.id, "terlambat")} className="text-sm font-semibold text-orange-600">Terlambat</button>}
                       {p.status !== "belum" && <button onClick={() => setStatus(p.id, "belum")} className="text-sm font-semibold text-slate-500">Reset</button>}
+                      <button onClick={() => removePayment(p.id)} className="ml-2 text-sm font-semibold text-rose-600">Hapus</button>
                     </td>}
                   </tr>
                 ))}

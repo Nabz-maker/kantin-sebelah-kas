@@ -48,6 +48,34 @@ export async function POST(req) {
   return NextResponse.json({ ok: true, created });
 }
 
+// DELETE: admin hapus riwayat pembayaran (opsional ikut hapus transaksi terkait)
+export async function DELETE(req) {
+  const s = await getSession();
+  if (!s || s.role !== "admin") return NextResponse.json({ error: "Hanya admin." }, { status: 403 });
+  const { id } = await req.json().catch(() => ({}));
+  if (!id) return NextResponse.json({ error: "ID wajib." }, { status: 400 });
+  try {
+    const p = await prisma.cashPayment.findUnique({ where: { id } });
+    if (!p) return NextResponse.json({ error: "Data tidak ditemukan." }, { status: 404 });
+    await prisma.cashPayment.delete({ where: { id } });
+    // Hapus juga transaksi pemasukan yang dibuat dari pembayaran ini (jika lunas)
+    if (p.status === "lunas") {
+      await prisma.transaction.deleteMany({
+        where: {
+          userId: s.uid,
+          type: "pemasukan",
+          category: { in: ["Iuran Kas", "Iuran Bulanan"] },
+          amount: p.amount,
+          description: p.week ? `Pembayaran kas minggu ke-${p.week} ${p.month}/${p.year}` : `Pembayaran kas ${p.month}/${p.year}`,
+        },
+      });
+    }
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ error: "Gagal menghapus." }, { status: 500 });
+  }
+}
+
 // PATCH: admin tandai status pembayaran
 export async function PATCH(req) {
   const s = await getSession();
