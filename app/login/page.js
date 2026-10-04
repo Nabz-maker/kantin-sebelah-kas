@@ -8,7 +8,7 @@ import { inputCls, labelCls, btnPrimary } from "@/components/ui";
 function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const [form, setForm] = useState({ login: "", password: "", remember: false });
+  const [form, setForm] = useState({ login: "", password: "", remember: true });
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
 
