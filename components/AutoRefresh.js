@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 
-export default function AutoRefresh({ interval = 15000 }) {
+export default function AutoRefresh({ interval = 5000 }) {
   useEffect(() => {
     const id = setInterval(() => {
       if (!document.hidden) window.dispatchEvent(new Event("refresh-data"));
