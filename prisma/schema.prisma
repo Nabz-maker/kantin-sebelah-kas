@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  username     String   @unique
+  email        String   @unique
+  phone        String?
+  passwordHash String
+  role         String   @default("member") // admin | member
+  avatar       String?
+  status       String   @default("aktif") // aktif | nonaktif
+  createdAt    DateTime @default(now())
+  transactions Transaction[]
+  payments     CashPayment[]
+  resetTokens  ResetToken[]
+}
+
+model Transaction {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type            String // pemasukan | pengeluaran
+  category        String
+  amount          Int
+  description     String
+  transactionDate DateTime
+  proof           String?
+  notes           String?
+  createdAt       DateTime @default(now())
+}
+
+model CashPayment {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  month     Int
+  year      Int
+  amount    Int
+  status    String   @default("belum") // lunas | belum | terlambat
+  paidAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@unique([userId, month, year])
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  type      String // pemasukan | pengeluaran
+  createdAt DateTime @default(now())
+}
+
+model Setting {
+  id               String  @id @default("singleton")
+  organizationName String  @default("Kantin Sebelah Organisasi")
+  cashName         String  @default("Kas Utama")
+  cashAmount       Int     @default(50000)
+  logo             String?
+  currency         String  @default("IDR")
+  theme            String  @default("light")
+  notifTx          Boolean @default(true)
+  notifPayment     Boolean @default(true)
+}
+
+model ResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

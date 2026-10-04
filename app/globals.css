@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+body { background: #F8FAFC; color: #1E293B; font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif; }
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 8px; }
+
+/* Mode gelap */
+html.dark body { background: #0F172A; color: #E2E8F0; }
+html.dark .bg-white { background-color: #1E293B; }
+html.dark .bg-white\/80 { background-color: rgba(30, 41, 59, 0.8); }
+html.dark .bg-slate-50 { background-color: #0F172A; }
+html.dark .bg-slate-100 { background-color: #334155; }
+html.dark .bg-indigo-50 { background-color: rgba(99, 102, 241, 0.15); }
+html.dark .bg-emerald-50 { background-color: rgba(16, 185, 129, 0.15); }
+html.dark .bg-rose-50 { background-color: rgba(244, 63, 94, 0.15); }
+html.dark .bg-orange-50 { background-color: rgba(249, 115, 22, 0.15); }
+html.dark .border-slate-200, html.dark .border-slate-100, html.dark .border-slate-300 { border-color: #334155; }
+html.dark .text-slate-900, html.dark .text-slate-800 { color: #F1F5F9; }
+html.dark .text-slate-700 { color: #E2E8F0; }
+html.dark .text-slate-600 { color: #CBD5E1; }
+html.dark .text-slate-500 { color: #94A3B8; }
+html.dark .text-slate-400 { color: #64748B; }
+html.dark .hover\:bg-slate-50:hover { background-color: #334155; }
+html.dark input, html.dark select, html.dark textarea { color: #E2E8F0; }
+html.dark ::placeholder { color: #64748B; }
+html.dark ::-webkit-scrollbar-thumb { background: #475569; }
