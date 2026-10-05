@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { LayoutDashboard, ArrowLeftRight, Wallet, Users, FileBarChart, UserCircle, Settings, LogOut, Search, Bell, Menu, X, ScrollText } from "lucide-react";
 import { toast } from "@/components/ToastHost";
 import AutoRefresh from "@/components/AutoRefresh";
+import PageTransition from "@/components/PageTransition";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function AppLayout({ children }) {
   const pathname = usePathname();
@@ -72,10 +74,13 @@ export default function AppLayout({ children }) {
       </aside>
 
       {/* Sidebar mobile */}
+      <AnimatePresence>
       {sideOpen && (
-        <div className="fixed inset-0 z-50 md:hidden" onClick={() => setSideOpen(false)}>
+        <motion.div className="fixed inset-0 z-50 md:hidden" onClick={() => setSideOpen(false)}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           <div className="absolute inset-0 bg-slate-950/40" />
-          <aside className="absolute inset-y-0 left-0 w-64 bg-white p-3" onClick={(e) => e.stopPropagation()}>
+          <motion.aside className="absolute inset-y-0 left-0 w-64 bg-white p-3" onClick={(e) => e.stopPropagation()}
+            initial={{ x: -260 }} animate={{ x: 0 }} exit={{ x: -260 }} transition={{ type: "tween", duration: 0.2 }}>
             <div className="mb-2 flex items-center justify-between px-2 pt-1">
               <p className="text-lg font-extrabold">Kantin Samping</p>
               <button onClick={() => setSideOpen(false)} aria-label="Tutup"><X size={20} /></button>
@@ -85,9 +90,10 @@ export default function AppLayout({ children }) {
                 <m.icon size={18} /> {m.label}
               </Link>
             ))}
-          </aside>
-        </div>
+          </motion.aside>
+        </motion.div>
       )}
+      </AnimatePresence>
 
       {/* Header */}
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/80 backdrop-blur">
@@ -103,14 +109,17 @@ export default function AppLayout({ children }) {
               <Bell size={18} />
               {notifs.some((n) => !n.read) && <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-rose-500" />}
             </button>
+            <AnimatePresence>
             {notifOpen && (
-              <div className="absolute right-0 z-50 mt-2 w-80 rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
+              <motion.div className="absolute right-0 z-50 mt-2 w-80 rounded-xl border border-slate-200 bg-white p-2 shadow-lg"
+                initial={{ opacity: 0, y: -6, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -6, scale: 0.97 }} transition={{ duration: 0.15 }}>
                 <p className="px-2 py-1 text-xs font-bold text-slate-400">Notifikasi</p>
                 {notifs.length === 0 ? <p className="px-2 py-3 text-sm text-slate-400">Belum ada notifikasi.</p> : notifs.map((n) => (
                   <div key={n.id} className={`rounded-lg px-2 py-2 text-sm ${n.read ? "text-slate-500" : "bg-indigo-50 text-slate-700"}`}>{n.text}</div>
                 ))}
-              </div>
+              </motion.div>
             )}
+            </AnimatePresence>
           </div>
           <div className="relative" ref={menuRef}>
             <button onClick={() => setMenuOpen((v) => !v)} className="flex items-center gap-2 rounded-xl border border-slate-200 py-1.5 pl-1.5 pr-3 hover:bg-slate-50">
@@ -119,18 +128,21 @@ export default function AppLayout({ children }) {
               </span>
               <span className="hidden max-w-28 truncate text-sm font-semibold sm:block">{user?.name || "…"}</span>
             </button>
+            <AnimatePresence>
             {menuOpen && (
-              <div className="absolute right-0 mt-2 w-44 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg">
+              <motion.div className="absolute right-0 mt-2 w-44 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg"
+                initial={{ opacity: 0, y: -6, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -6, scale: 0.97 }} transition={{ duration: 0.15 }}>
                 <Link href="/profil" onClick={() => setMenuOpen(false)} className="block rounded-lg px-3 py-2 text-sm hover:bg-slate-50">Profil Saya</Link>
                 {isAdmin && <Link href="/pengaturan" onClick={() => setMenuOpen(false)} className="block rounded-lg px-3 py-2 text-sm hover:bg-slate-50">Pengaturan</Link>}
                 <button onClick={logout} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-rose-600 hover:bg-rose-50"><LogOut size={16} /> Keluar</button>
-              </div>
+              </motion.div>
             )}
+            </AnimatePresence>
           </div>
         </div>
       </header>
 
-      <main className="px-4 pb-24 pt-6 md:px-8 md:pb-10">{children}</main>
+      <main className="px-4 pb-24 pt-6 md:px-8 md:pb-10"><PageTransition>{children}</PageTransition></main>
       <AutoRefresh />
 
 

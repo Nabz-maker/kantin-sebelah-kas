@@ -52,7 +52,7 @@ export default function Dashboard() {
           ["Jumlah Anggota", stats.anggota, "text-slate-800"],
           ["Kas Bulan Ini", rupiah(stats.kasBulanIni), "text-orange-600"],
         ].map(([label, value, cls], i) => (
-          <motion.div key={label} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06, duration: 0.35 }} className="hover-lift rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <motion.div key={label} whileHover={{ y: -4 }} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06, duration: 0.35 }} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{label}</p>
             <p className={`mt-2 text-xl font-extrabold ${cls}`}>{value}</p>
           </motion.div>
