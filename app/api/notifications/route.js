@@ -12,6 +12,6 @@ export async function GET() {
 export async function PATCH() {
   const s = await getSession();
   if (!s) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  await prisma.notification.updateMany({ where: { userId: s.uid, read: false }, data: { read: true } });
+  await prisma.notification.deleteMany({ where: { userId: s.uid } });
   return NextResponse.json({ ok: true });
 }
