@@ -114,7 +114,7 @@ export default function Landing() {
                 Kas jelas,
               </motion.span>
               <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="block">
-                organisasi <span className="text-indigo-400">tenang.</span>
+                token pun <span className="text-indigo-400">tenang.</span>
               </motion.span>
             </h1>
 
