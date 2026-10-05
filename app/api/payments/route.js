@@ -44,7 +44,16 @@ export async function POST(req) {
   let created = 0;
   for (const u of members) {
     const exists = await prisma.cashPayment.findUnique({ where: { userId_month_year_week: { userId: u.id, month: m, year: y, week: w } } });
-    if (!exists) { await prisma.cashPayment.create({ data: { userId: u.id, month: m, year: y, week: w, amount: finalAmount, description: description?.trim() || null } }); created++; }
+    if (!exists) {
+      await prisma.cashPayment.create({ data: { userId: u.id, month: m, year: y, week: w, amount: finalAmount, description: description?.trim() || null } });
+      await prisma.notification.create({
+        data: {
+          userId: u.id,
+          text: `Tagihan baru${w ? ` minggu ke-${w}` : ""} ${m}/${y} sebesar Rp ${finalAmount.toLocaleString("id-ID")}${description?.trim() ? ` — ${description.trim()}` : ""}`,
+        },
+      });
+      created++;
+    }
   }
   return NextResponse.json({ ok: true, created });
 }

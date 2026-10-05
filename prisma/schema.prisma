@@ -72,6 +72,14 @@ model Setting {
   notifPayment     Boolean @default(true)
 }
 
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  text      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
 model LoginLog {
   id        String   @id @default(cuid())
   userId    String?

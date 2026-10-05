@@ -12,11 +12,13 @@ export default function AppLayout({ children }) {
   const [user, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [sideOpen, setSideOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifs, setNotifs] = useState([]);
   const [search, setSearch] = useState("");
   const menuRef = useRef(null);
 
   useEffect(() => {
-    const load = () => fetch("/api/auth/me").then((r) => r.json()).then((d) => { if (!d.user) router.push("/login"); else { setUser(d.user); } });
+    const load = () => { fetch("/api/auth/me").then((r) => r.json()).then((d) => { if (!d.user) router.push("/login"); else { setUser(d.user); fetch("/api/notifications").then((r) => r.json()).then((x) => setNotifs(x.items || [])); } }); };
     load();
     window.addEventListener("user-updated", load);
     return () => window.removeEventListener("user-updated", load);
@@ -96,9 +98,20 @@ export default function AppLayout({ children }) {
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Cari transaksi…" className="w-full bg-transparent text-sm outline-none" />
           </form>
           <div className="flex-1 md:hidden" />
-          <button className="relative rounded-xl border border-slate-200 p-2 text-slate-500 hover:bg-slate-50" onClick={() => toast("Tidak ada notifikasi baru.")} aria-label="Notifikasi">
-            <Bell size={18} />
-          </button>
+          <div className="relative">
+            <button className="relative rounded-xl border border-slate-200 p-2 text-slate-500 hover:bg-slate-50" onClick={() => { setNotifOpen((v) => !v); fetch("/api/notifications").then((r) => r.json()).then((d) => setNotifs(d.items || [])); setNotifs((x) => x.map((n) => ({ ...n, read: true }))); fetch("/api/notifications", { method: "PATCH" }); }} aria-label="Notifikasi">
+              <Bell size={18} />
+              {notifs.some((n) => !n.read) && <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-rose-500" />}
+            </button>
+            {notifOpen && (
+              <div className="absolute right-0 z-50 mt-2 w-80 rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
+                <p className="px-2 py-1 text-xs font-bold text-slate-400">Notifikasi</p>
+                {notifs.length === 0 ? <p className="px-2 py-3 text-sm text-slate-400">Belum ada notifikasi.</p> : notifs.map((n) => (
+                  <div key={n.id} className={`rounded-lg px-2 py-2 text-sm ${n.read ? "text-slate-500" : "bg-indigo-50 text-slate-700"}`}>{n.text}</div>
+                ))}
+              </div>
+            )}
+          </div>
           <div className="relative" ref={menuRef}>
             <button onClick={() => setMenuOpen((v) => !v)} className="flex items-center gap-2 rounded-xl border border-slate-200 py-1.5 pl-1.5 pr-3 hover:bg-slate-50">
               <span className="grid h-7 w-7 place-items-center rounded-lg bg-indigo-100 text-xs font-bold text-indigo-700">
