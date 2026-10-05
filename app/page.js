@@ -88,7 +88,7 @@ export default function Landing() {
           </nav>
           <div className="flex items-center gap-2">
             <Link href="/login" className="rounded-xl px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-white/10">Login</Link>
-            <Link href="/login" className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500">Login dulu woi</Link>
+            <span aria-hidden="true" className="select-none rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white">KS</span>
           </div>
         </div>
       </header>
