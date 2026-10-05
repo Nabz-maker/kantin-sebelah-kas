@@ -9,7 +9,7 @@ export default function Pembayaran() {
   const [items, setItems] = useState(null);
   const now = new Date();
   const [filters, setFilters] = useState({ month: now.getMonth() + 1, year: now.getFullYear(), status: "semua", name: "" });
-  const [gen, setGen] = useState({ month: now.getMonth() + 1, year: now.getFullYear(), period: "bulanan", week: 1 });
+  const [gen, setGen] = useState({ month: now.getMonth() + 1, year: now.getFullYear(), period: "bulanan", week: 1, amount: "" });
 
   const load = useCallback(() => {
     const qs = new URLSearchParams();
@@ -34,7 +34,7 @@ export default function Pembayaran() {
   }
 
   async function generate() {
-    const payload = { month: gen.month, year: gen.year, week: gen.period === "mingguan" ? Number(gen.week) : 0 };
+    const payload = { month: gen.month, year: gen.year, week: gen.period === "mingguan" ? Number(gen.week) : 0, amount: gen.amount };
     const res = await fetch("/api/payments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     const d = await res.json();
     if (!res.ok) return toast(d.error || "Gagal membuat tagihan.", false);
@@ -61,6 +61,7 @@ export default function Pembayaran() {
           {gen.period === "mingguan" && <div><label className="mb-1 block text-xs font-semibold text-slate-500">Minggu ke-</label><input type="number" min="1" max="53" className={inputCls} value={gen.week} onChange={(e) => setGen({ ...gen, week: e.target.value })} /></div>}
           <div><label className="mb-1 block text-xs font-semibold text-slate-500">Bulan</label><input type="number" min="1" max="12" className={inputCls} value={gen.month} onChange={(e) => setGen({ ...gen, month: e.target.value })} /></div>
           <div><label className="mb-1 block text-xs font-semibold text-slate-500">Tahun</label><input type="number" className={inputCls} value={gen.year} onChange={(e) => setGen({ ...gen, year: e.target.value })} /></div>
+          <div><label className="mb-1 block text-xs font-semibold text-slate-500">Nominal (Rp)</label><input type="number" min="1" className={inputCls} value={gen.amount} onChange={(e) => setGen({ ...gen, amount: e.target.value })} placeholder="kosong = nominal setting" /></div>
           <button onClick={generate} className={btnPrimary}>Buat Tagihan</button>
         </div>
       )}
