@@ -31,7 +31,7 @@ function DashboardMock() {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-xs font-medium text-slate-400">Ringkasan Kas</p>
-          <p style={displayCls} className="mt-0.5 text-2xl font-extrabold tracking-tight text-white">Rp 1.250.000</p>
+          <p style={displayCls} className="mt-0.5 text-2xl font-extrabold tracking-tight text-white">Rp 3.000</p>
         </div>
         <span className="text-xs font-semibold text-indigo-300">Oktober</span>
       </div>
