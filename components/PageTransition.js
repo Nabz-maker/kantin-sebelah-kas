@@ -1,20 +1,7 @@
 "use client";
-import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 
+// Ringan untuk Android: tanpa framer-motion.
+// Transisi hanya CSS opacity 1x per navigasi, tidak ada JS animation loop.
 export default function PageTransition({ children }) {
-  const pathname = usePathname();
-  return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={pathname}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.2 }}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
-  );
+  return <div className="animate-fade-in">{children}</div>;
 }

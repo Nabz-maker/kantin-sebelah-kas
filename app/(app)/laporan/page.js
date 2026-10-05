@@ -1,9 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from "recharts";
+import dynamic from "next/dynamic";
 import { Spinner, btnPrimary } from "@/components/ui";
 import { rupiah, formatDate } from "@/lib/utils";
 import { toast } from "@/components/ToastHost";
+
+const BarChart = dynamic(() => import("recharts").then((m) => m.BarChart), { ssr: false });
+const Bar = dynamic(() => import("recharts").then((m) => m.Bar), { ssr: false });
+const XAxis = dynamic(() => import("recharts").then((m) => m.XAxis), { ssr: false });
+const YAxis = dynamic(() => import("recharts").then((m) => m.YAxis), { ssr: false });
+const Tooltip = dynamic(() => import("recharts").then((m) => m.Tooltip), { ssr: false });
+const Legend = dynamic(() => import("recharts").then((m) => m.Legend), { ssr: false });
+const ResponsiveContainer = dynamic(() => import("recharts").then((m) => m.ResponsiveContainer), { ssr: false });
+const CartesianGrid = dynamic(() => import("recharts").then((m) => m.CartesianGrid), { ssr: false });
 
 export default function Laporan() {
   const [data, setData] = useState(null);
@@ -31,7 +40,7 @@ export default function Laporan() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="animate-fade-in space-y-6">
       <div className="no-print flex items-center justify-between">
         <h1 className="text-xl font-extrabold tracking-tight">Laporan Keuangan</h1>
         <div className="flex gap-2">
@@ -44,7 +53,7 @@ export default function Laporan() {
         {[["Total Pemasukan", rupiah(data.stats.pemasukan), "text-emerald-600"], ["Total Pengeluaran", rupiah(data.stats.pengeluaran), "text-rose-600"], ["Saldo Akhir", rupiah(data.stats.saldo), "text-indigo-600"], ["Jumlah Anggota", data.stats.anggota, "text-slate-800"]].map(([l, v, c]) => (
           <div key={l} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{l}</p>
-            <p className={`mt-2 text-xl font-extrabold ${c}`}>{v}</p>
+            <p className={`mt-2 text-xl font-extrabold tabular-nums ${c}`}>{v}</p>
           </div>
         ))}
       </div>
@@ -59,8 +68,8 @@ export default function Laporan() {
               <YAxis tick={{ fontSize: 11 }} />
               <Tooltip formatter={(v) => rupiah(v)} />
               <Legend />
-              <Bar dataKey="pemasukan" fill="#10B981" radius={[6, 6, 0, 0]} />
-              <Bar dataKey="pengeluaran" fill="#F43F5E" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="pemasukan" fill="#10B981" radius={[6, 6, 0, 0]} isAnimationActive={false} />
+              <Bar dataKey="pengeluaran" fill="#F43F5E" radius={[6, 6, 0, 0]} isAnimationActive={false} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -76,11 +85,11 @@ export default function Laporan() {
             <tbody>
               {data.recent.map((t) => (
                 <tr key={t.id} className="border-t border-slate-50">
-                  <td className="px-5 py-3 text-slate-500">{formatDate(t.transactionDate)}</td>
+                  <td className="whitespace-nowrap px-5 py-3 text-slate-500">{formatDate(t.transactionDate)}</td>
                   <td className="px-5 py-3 font-medium">{t.description}</td>
                   <td className="px-5 py-3 text-slate-500">{t.category}</td>
                   <td className="px-5 py-3">{t.type}</td>
-                  <td className={`px-5 py-3 text-right font-bold ${t.type === "pemasukan" ? "text-emerald-600" : "text-rose-600"}`}>{rupiah(t.amount)}</td>
+                  <td className={`px-5 py-3 text-right font-bold tabular-nums ${t.type === "pemasukan" ? "text-emerald-600" : "text-rose-600"}`}>{rupiah(t.amount)}</td>
                 </tr>
               ))}
             </tbody>

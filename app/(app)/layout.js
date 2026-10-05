@@ -6,7 +6,6 @@ import { LayoutDashboard, ArrowLeftRight, Wallet, Users, FileBarChart, UserCircl
 import { toast } from "@/components/ToastHost";
 import AutoRefresh from "@/components/AutoRefresh";
 import PageTransition from "@/components/PageTransition";
-import { motion, AnimatePresence } from "framer-motion";
 
 export default function AppLayout({ children }) {
   const pathname = usePathname();
@@ -61,7 +60,7 @@ export default function AppLayout({ children }) {
       {/* Sidebar desktop */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col border-r border-slate-200 bg-white md:flex">
         <div className="flex h-16 items-center gap-2.5 border-b border-slate-100 px-5">
-          <img src="/logo.png" alt="Logo" className="h-9 w-9 rounded-xl object-cover" />
+          <img src="/logo.png" alt="Logo" width={36} height={36} loading="lazy" decoding="async" className="h-9 w-9 rounded-xl object-cover" />
           <p className="text-lg font-extrabold tracking-tight text-slate-800">Kantin Samping</p>
         </div>
         <nav className="flex-1 space-y-1 p-3">
@@ -73,14 +72,11 @@ export default function AppLayout({ children }) {
         </nav>
       </aside>
 
-      {/* Sidebar mobile */}
-      <AnimatePresence>
+      {/* Sidebar mobile — tanpa animasi JS, murni CSS */}
       {sideOpen && (
-        <motion.div className="fixed inset-0 z-50 md:hidden" onClick={() => setSideOpen(false)}
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        <div className="fixed inset-0 z-50 md:hidden" onClick={() => setSideOpen(false)}>
           <div className="absolute inset-0 bg-slate-950/40" />
-          <motion.aside className="absolute inset-y-0 left-0 w-64 bg-white p-3" onClick={(e) => e.stopPropagation()}
-            initial={{ x: -260 }} animate={{ x: 0 }} exit={{ x: -260 }} transition={{ type: "tween", duration: 0.2 }}>
+          <aside className="animate-fade-in absolute inset-y-0 left-0 w-64 bg-white p-3" onClick={(e) => e.stopPropagation()}>
             <div className="mb-2 flex items-center justify-between px-2 pt-1">
               <p className="text-lg font-extrabold">Kantin Samping</p>
               <button onClick={() => setSideOpen(false)} aria-label="Tutup"><X size={20} /></button>
@@ -90,18 +86,17 @@ export default function AppLayout({ children }) {
                 <m.icon size={18} /> {m.label}
               </Link>
             ))}
-          </motion.aside>
-        </motion.div>
+          </aside>
+        </div>
       )}
-      </AnimatePresence>
 
-      {/* Header */}
+      {/* Header — backdrop-blur dihapus di HP via CSS */}
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/80 backdrop-blur">
         <div className="flex h-16 items-center gap-3 px-4 md:px-8">
           <button className="md:hidden" onClick={() => setSideOpen(true)} aria-label="Menu"><Menu size={22} /></button>
           <form onSubmit={submitSearch} className="hidden flex-1 max-w-sm items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 md:flex">
             <Search size={16} className="text-slate-400" />
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Cari transaksi…" className="w-full bg-transparent text-sm outline-none" />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Cari transaksi…" enterKeyHint="search" className="w-full bg-transparent text-sm outline-none" />
           </form>
           <div className="flex-1 md:hidden" />
           <div className="relative">
@@ -109,35 +104,29 @@ export default function AppLayout({ children }) {
               <Bell size={18} />
               {notifs.some((n) => !n.read) && <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-rose-500" />}
             </button>
-            <AnimatePresence>
             {notifOpen && (
-              <motion.div className="absolute right-0 z-50 mt-2 w-80 rounded-xl border border-slate-200 bg-white p-2 shadow-lg"
-                initial={{ opacity: 0, y: -6, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -6, scale: 0.97 }} transition={{ duration: 0.15 }}>
+              <div className="animate-fade-in absolute right-0 z-50 mt-2 max-h-[60vh] w-80 overflow-y-auto rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
                 <p className="px-2 py-1 text-xs font-bold text-slate-400">Notifikasi</p>
                 {notifs.length === 0 ? <p className="px-2 py-3 text-sm text-slate-400">Belum ada notifikasi.</p> : notifs.map((n) => (
                   <div key={n.id} className={`rounded-lg px-2 py-2 text-sm ${n.read ? "text-slate-500" : "bg-indigo-50 text-slate-700"}`}>{n.text}</div>
                 ))}
-              </motion.div>
+              </div>
             )}
-            </AnimatePresence>
           </div>
           <div className="relative" ref={menuRef}>
             <button onClick={() => setMenuOpen((v) => !v)} className="flex items-center gap-2 rounded-xl border border-slate-200 py-1.5 pl-1.5 pr-3 hover:bg-slate-50">
-              <span className="grid h-7 w-7 place-items-center rounded-lg bg-indigo-100 text-xs font-bold text-indigo-700">
-                {user?.avatar ? <img src={user.avatar} alt="" className="h-7 w-7 rounded-lg object-cover" /> : (user?.name?.[0] || "?").toUpperCase()}
+              <span className="grid h-7 w-7 place-items-center overflow-hidden rounded-lg bg-indigo-100 text-xs font-bold text-indigo-700">
+                {user?.avatar ? <img src={user.avatar} alt="" width={28} height={28} loading="lazy" decoding="async" className="h-7 w-7 rounded-lg object-cover" /> : (user?.name?.[0] || "?").toUpperCase()}
               </span>
               <span className="hidden max-w-28 truncate text-sm font-semibold sm:block">{user?.name || "…"}</span>
             </button>
-            <AnimatePresence>
             {menuOpen && (
-              <motion.div className="absolute right-0 mt-2 w-44 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg"
-                initial={{ opacity: 0, y: -6, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -6, scale: 0.97 }} transition={{ duration: 0.15 }}>
+              <div className="animate-fade-in absolute right-0 mt-2 w-44 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg">
                 <Link href="/profil" onClick={() => setMenuOpen(false)} className="block rounded-lg px-3 py-2 text-sm hover:bg-slate-50">Profil Saya</Link>
                 {isAdmin && <Link href="/pengaturan" onClick={() => setMenuOpen(false)} className="block rounded-lg px-3 py-2 text-sm hover:bg-slate-50">Pengaturan</Link>}
                 <button onClick={logout} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-rose-600 hover:bg-rose-50"><LogOut size={16} /> Keluar</button>
-              </motion.div>
+              </div>
             )}
-            </AnimatePresence>
           </div>
         </div>
       </header>

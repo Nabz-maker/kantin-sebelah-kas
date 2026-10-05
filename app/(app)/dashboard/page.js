@@ -1,13 +1,25 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { BarChart, Bar, LineChart, Line, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
 import { ArrowRight, BellRing } from "lucide-react";
 import Badge, { Spinner, EmptyState } from "@/components/ui";
 import { rupiah, formatDate } from "@/lib/utils";
 
-const display = { fontFamily: "var(--font-display)" };
+// Recharts berat (~300KB). Lazy-load hanya saat dashboard dibuka,
+// tidak ikut bundle awal agar parsing JS di Android jauh lebih cepat.
+const BarChart = dynamic(() => import("recharts").then((m) => m.BarChart), { ssr: false });
+const Bar = dynamic(() => import("recharts").then((m) => m.Bar), { ssr: false });
+const LineChart = dynamic(() => import("recharts").then((m) => m.LineChart), { ssr: false });
+const Line = dynamic(() => import("recharts").then((m) => m.Line), { ssr: false });
+const Area = dynamic(() => import("recharts").then((m) => m.Area), { ssr: false });
+const XAxis = dynamic(() => import("recharts").then((m) => m.XAxis), { ssr: false });
+const YAxis = dynamic(() => import("recharts").then((m) => m.YAxis), { ssr: false });
+const Tooltip = dynamic(() => import("recharts").then((m) => m.Tooltip), { ssr: false });
+const ResponsiveContainer = dynamic(() => import("recharts").then((m) => m.ResponsiveContainer), { ssr: false });
+const CartesianGrid = dynamic(() => import("recharts").then((m) => m.CartesianGrid), { ssr: false });
+
+const display = { fontFamily: "var(--font-display), system-ui, sans-serif" };
 
 const RANGES = [["week", "Minggu"], ["month", "Bulan"], ["year", "Tahun"]];
 const RANGE_COPY = {
@@ -15,9 +27,6 @@ const RANGE_COPY = {
   month: "30 hari terakhir",
   year: "12 bulan terakhir",
 };
-
-const rise = { hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } };
-const stagger = { show: { transition: { staggerChildren: 0.06 } } };
 
 const axisTick = { fontSize: 11, fill: "#64748B" };
 
@@ -39,6 +48,68 @@ function ChartTip({ active, payload, label }) {
           <span className="ml-2 font-semibold tabular-nums text-white">{rupiah(p.value)}</span>
         </p>
       ))}
+    </div>
+  );
+}
+
+// Chart hanya dirender di layar ≥360px penuh & setelah data siap — hemat CPU HP.
+function Charts({ chart, trend }) {
+  const [showCharts, setShowCharts] = useState(false);
+  useEffect(() => {
+    // Tunda render grafik 1 frame agar teks/statistik tampil dulu (FCP cepat)
+    const id = requestAnimationFrame(() => setShowCharts(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+  if (!showCharts) return <div className="h-64 animate-pulse rounded-xl bg-slate-50" />;
+
+  return (
+    <div className="grid lg:grid-cols-2">
+      <div className="p-5 lg:border-r lg:border-slate-100">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+          <h2 className="font-bold text-slate-900">Pemasukan vs Pengeluaran</h2>
+          <div className="flex items-center gap-3 text-xs text-slate-500">
+            <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-emerald-500" />Pemasukan</span>
+            <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-rose-500" />Pengeluaran</span>
+          </div>
+        </div>
+        <div className="h-64">
+          <ResponsiveContainer>
+            <BarChart data={chart} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+              <CartesianGrid stroke="#94A3B8" strokeOpacity={0.25} vertical={false} />
+              <XAxis dataKey="label" tick={axisTick} tickLine={false} axisLine={false} minTickGap={16} />
+              <YAxis tick={axisTick} tickLine={false} axisLine={false} width={52} tickFormatter={rupiahAxis} />
+              <Tooltip cursor={{ fill: "#94A3B8", fillOpacity: 0.12 }} content={<ChartTip />} />
+              <Bar dataKey="pemasukan" fill="#10B981" radius={[6, 6, 0, 0]} isAnimationActive={false} />
+              <Bar dataKey="pengeluaran" fill="#F43F5E" radius={[6, 6, 0, 0]} isAnimationActive={false} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="border-t border-slate-100 p-5">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+          <h2 className="font-bold text-slate-900">Perkembangan Saldo</h2>
+          <span className="text-xs text-slate-500">Saldo berjalan</span>
+        </div>
+        <div className="h-64">
+          <ResponsiveContainer>
+            <LineChart data={trend} margin={{ top: 4, right: 8, bottom: 0, left: 0 }}>
+              <defs>
+                <linearGradient id="saldoFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#6366F1" stopOpacity={0.35} />
+                  <stop offset="100%" stopColor="#6366F1" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid stroke="#94A3B8" strokeOpacity={0.25} vertical={false} />
+              <XAxis dataKey="date" tick={axisTick} tickLine={false} axisLine={false} minTickGap={24} />
+              <YAxis tick={axisTick} tickLine={false} axisLine={false} width={52} tickFormatter={rupiahAxis} />
+              <Tooltip content={<ChartTip />} />
+              <Area type="monotone" dataKey="saldo" stroke="none" fill="url(#saldoFill)" isAnimationActive={false} />
+              <Line type="monotone" dataKey="saldo" stroke="#4F46E5" strokeWidth={2.5} dot={false} activeDot={{ r: 4, strokeWidth: 0 }} isAnimationActive={false} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   );
 }
@@ -73,9 +144,9 @@ export default function Dashboard() {
   ];
 
   return (
-    <motion.div initial="hidden" animate="show" variants={stagger} className="space-y-6">
+    <div className="animate-fade-in space-y-6">
       {unpaid.length > 0 && (
-        <motion.div variants={rise} className="flex items-start gap-3 rounded-2xl border border-amber-300 bg-amber-50 p-4">
+        <div className="flex items-start gap-3 rounded-2xl border border-amber-300 bg-amber-50 p-4">
           <BellRing size={18} className="mt-0.5 shrink-0 text-amber-700" />
           <div className="text-sm">
             <p className="font-bold text-amber-900">Pengingat Pembayaran Kas</p>
@@ -83,11 +154,11 @@ export default function Dashboard() {
               Anda masih memiliki {unpaid.length} tagihan kas bulan {bulanIni} yang belum lunas. Silakan lakukan pembayaran.
             </p>
           </div>
-        </motion.div>
+        </div>
       )}
 
-      {/* Judul + pemilih periode */}
-      <motion.div variants={rise} className="flex flex-wrap items-end justify-between gap-4">
+      {/* Judul + pemilih periode — tanpa layoutId spring (berat di HP) */}
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 style={display} className="text-3xl font-extrabold tracking-tight text-slate-900">Dashboard</h1>
           <p className="mt-1 text-sm text-slate-500">Ringkasan kas &amp; iuran · grafik {RANGE_COPY[range]} · data diperbarui otomatis</p>
@@ -97,23 +168,16 @@ export default function Dashboard() {
             <button
               key={k}
               onClick={() => setRange(k)}
-              className={`relative rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-colors ${range === k ? "text-slate-900" : "text-slate-500 hover:text-slate-700"}`}
+              className={`rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-colors ${range === k ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
             >
-              {range === k && (
-                <motion.span
-                  layoutId="range-pill"
-                  transition={{ type: "spring", stiffness: 420, damping: 34 }}
-                  className="absolute inset-0 rounded-lg bg-white shadow-sm"
-                />
-              )}
-              <span className="relative">{v}</span>
+              {v}
             </button>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       {/* Struk kas */}
-      <motion.section variants={rise} className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
         <div className="grid grid-cols-2 lg:grid-cols-6">
           <div className="col-span-2 bg-slate-900 p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-300">Saldo kas</p>
@@ -133,62 +197,15 @@ export default function Dashboard() {
             </div>
           ))}
         </div>
-      </motion.section>
+      </section>
 
       {/* Grafik */}
-      <motion.section variants={rise} className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-        <div className="grid lg:grid-cols-2">
-          <div className="p-5 lg:border-r lg:border-slate-100">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-              <h2 className="font-bold text-slate-900">Pemasukan vs Pengeluaran</h2>
-              <div className="flex items-center gap-3 text-xs text-slate-500">
-                <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-emerald-500" />Pemasukan</span>
-                <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-rose-500" />Pengeluaran</span>
-              </div>
-            </div>
-            <div className="h-64">
-              <ResponsiveContainer>
-                <BarChart data={chart} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
-                  <CartesianGrid stroke="#94A3B8" strokeOpacity={0.25} vertical={false} />
-                  <XAxis dataKey="label" tick={axisTick} tickLine={false} axisLine={false} minTickGap={16} />
-                  <YAxis tick={axisTick} tickLine={false} axisLine={false} width={52} tickFormatter={rupiahAxis} />
-                  <Tooltip cursor={{ fill: "#94A3B8", fillOpacity: 0.12 }} content={<ChartTip />} />
-                  <Bar dataKey="pemasukan" fill="#10B981" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="pengeluaran" fill="#F43F5E" radius={[6, 6, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          <div className="border-t border-slate-100 p-5">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-              <h2 className="font-bold text-slate-900">Perkembangan Saldo</h2>
-              <span className="text-xs text-slate-500">Saldo berjalan</span>
-            </div>
-            <div className="h-64">
-              <ResponsiveContainer>
-                <LineChart data={trend} margin={{ top: 4, right: 8, bottom: 0, left: 0 }}>
-                  <defs>
-                    <linearGradient id="saldoFill" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#6366F1" stopOpacity={0.35} />
-                      <stop offset="100%" stopColor="#6366F1" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid stroke="#94A3B8" strokeOpacity={0.25} vertical={false} />
-                  <XAxis dataKey="date" tick={axisTick} tickLine={false} axisLine={false} minTickGap={24} />
-                  <YAxis tick={axisTick} tickLine={false} axisLine={false} width={52} tickFormatter={rupiahAxis} />
-                  <Tooltip content={<ChartTip />} />
-                  <Area type="monotone" dataKey="saldo" stroke="none" fill="url(#saldoFill)" />
-                  <Line type="monotone" dataKey="saldo" stroke="#4F46E5" strokeWidth={2.5} dot={false} activeDot={{ r: 4, strokeWidth: 0 }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </div>
-      </motion.section>
+      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <Charts chart={chart} trend={trend} />
+      </section>
 
       {/* Transaksi terbaru */}
-      <motion.section variants={rise} className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
         <div className="flex items-center justify-between border-b border-slate-100 p-5">
           <h2 className="font-bold text-slate-900">Transaksi Terbaru</h2>
           <Link href="/transaksi" className="group inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 transition-colors hover:text-indigo-500">
@@ -227,7 +244,7 @@ export default function Dashboard() {
             </table>
           </div>
         )}
-      </motion.section>
-    </motion.div>
+      </section>
+    </div>
   );
 }

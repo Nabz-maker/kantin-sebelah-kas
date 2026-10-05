@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
-body { background: #F8FAFC; color: #1E293B; font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif; }
+body { background: #F8FAFC; color: #1E293B; font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; text-size-adjust: 100%; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+img { content-visibility: auto; }
+
+/* Scroll halus di Android tanpa repaint mahal */
+html { scroll-behavior: smooth; }
+@media (max-width: 768px) { html { scroll-behavior: auto; } }
 
 @media print {
   .no-print { display: none !important; }
@@ -44,3 +49,20 @@ html.dark ::-webkit-scrollbar-thumb { background: #475569; }
 .animate-modal-pop { animation: modalPop .28s ease both; }
 .hover-lift { transition: transform .2s ease, box-shadow .2s ease; }
 .hover-lift:hover { transform: translateY(-3px); box-shadow: 0 10px 25px -10px rgb(0 0 0 / .12); }
+
+/* === Optimasi Android: matikan efek GPU-berat di layar kecil === */
+/* blur-3xl + backdrop-blur + infinite float bikin HP panas & patah-patah */
+@media (max-width: 768px) {
+  .blur-3xl { filter: none !important; }
+  .backdrop-blur { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+  .hover-lift:hover { transform: none; box-shadow: none; }
+  /* section di bawah fold tidak dirender sampai mendekati viewport */
+  section { content-visibility: auto; contain-intrinsic-size: auto 400px; }
+}
+/* Hormati pengaturan hemat animasi di Android */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+/* Glow dekoratif: sembunyikan di HP, tampil di desktop saja */
+.glow-decor { display: none; }
+@media (min-width: 769px) { .glow-decor { display: block; } }
