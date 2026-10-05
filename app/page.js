@@ -119,7 +119,7 @@ export default function Landing() {
             </h1>
 
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="mt-5 max-w-md text-sm leading-relaxed text-slate-300 md:text-base">
-              Catat pemasukan dan pengeluaran, tagih iuran mingguan otomatis, dan bagikan laporan — semua anggota melihat angka yang sama.
+              Jangan lupa bayar kas, kalo lupa token berisik.
             </motion.p>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }} className="mt-8 flex flex-wrap gap-3">
