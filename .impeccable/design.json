@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-05T16:38:33+07:00",
+  "title": "Design System: Kantin Samping",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Biru-Slate Tenang", "canonical": "#4F46E5", "tonalRamp": ["#0C0A2E", "#191554", "#272181", "#372FB2", "#4F46E5", "#6E67F0", "#9C97F6", "#CFCCFB"] },
+      "primary-hover": { "role": "primary", "displayName": "Indigo Hover", "canonical": "#6366F1", "tonalRamp": ["#0C0A2E", "#191554", "#272181", "#372FB2", "#4F46E5", "#6366F1", "#9C97F6", "#CFCCFB"] },
+      "primary-deep": { "role": "primary", "displayName": "Indigo Dalam", "canonical": "#4338CA", "tonalRamp": ["#0C0A2E", "#191554", "#272181", "#4338CA", "#4F46E5", "#6E67F0", "#9C97F6", "#CFCCFB"] },
+      "primary-soft": { "role": "primary", "displayName": "Indigo Lembut", "canonical": "#E0E7FF", "tonalRamp": ["#0C0A2E", "#191554", "#272181", "#372FB2", "#4F46E5", "#6E67F0", "#A5A1F7", "#E0E7FF"] },
+      "neutral-bg": { "role": "neutral", "displayName": "Kertas Abu Terang", "canonical": "#F8FAFC", "tonalRamp": ["#020617", "#0F172A", "#1E293B", "#334155", "#475569", "#64748B", "#CBD5E1", "#F8FAFC"] },
+      "neutral-surface": { "role": "neutral", "displayName": "Permukaan Putih", "canonical": "#FFFFFF", "tonalRamp": ["#020617", "#0F172A", "#1E293B", "#334155", "#475569", "#94A3B8", "#E2E8F0", "#FFFFFF"] },
+      "neutral-border": { "role": "neutral", "displayName": "Border Halus", "canonical": "#E2E8F0", "tonalRamp": ["#020617", "#0F172A", "#1E293B", "#334155", "#64748B", "#94A3B8", "#CBD5E1", "#E2E8F0"] },
+      "neutral-text": { "role": "neutral", "displayName": "Teks Utama", "canonical": "#1E293B", "tonalRamp": ["#020617", "#0F172A", "#1E293B", "#334155", "#475569", "#64748B", "#94A3B8", "#E2E8F0"] },
+      "neutral-text-muted": { "role": "neutral", "displayName": "Teks Redup", "canonical": "#475569", "tonalRamp": ["#020617", "#0F172A", "#1E293B", "#334155", "#475569", "#64748B", "#94A3B8", "#E2E8F0"] },
+      "neutral-text-subtle": { "role": "neutral", "displayName": "Teks Redup Lanjut", "canonical": "#64748B", "tonalRamp": ["#020617", "#0F172A", "#1E293B", "#334155", "#475569", "#64748B", "#94A3B8", "#CBD5E1"] },
+      "success": { "role": "status", "displayName": "Hijau Sukses", "canonical": "#047857", "tonalRamp": ["#042F22", "#064E3B", "#047857", "#059669", "#10B981", "#34D399", "#6EE7B7", "#D1FAE5"] },
+      "success-soft": { "role": "status", "displayName": "Sukses Lembut", "canonical": "#ECFDF5", "tonalRamp": ["#042F22", "#064E3B", "#047857", "#10B981", "#34D399", "#6EE7B7", "#A7F3D0", "#ECFDF5"] },
+      "danger": { "role": "status", "displayName": "Merah Bahaya", "canonical": "#E11D48", "tonalRamp": ["#4C0519", "#881337", "#BE123C", "#E11D48", "#F43F5E", "#FB7185", "#FDA4AF", "#FFE4E6"] },
+      "danger-soft": { "role": "status", "displayName": "Bahaya Lembut", "canonical": "#FFF1F2", "tonalRamp": ["#4C0519", "#881337", "#BE123C", "#F43F5E", "#FB7185", "#FDA4AF", "#FECDD3", "#FFF1F2"] },
+      "warning": { "role": "status", "displayName": "Oranye Peringatan", "canonical": "#C2410C", "tonalRamp": ["#431407", "#7C2D12", "#C2410C", "#EA580C", "#F97316", "#FB923C", "#FDBA74", "#FFEDD5"] },
+      "warning-soft": { "role": "status", "displayName": "Peringatan Lembut", "canonical": "#FFF7ED", "tonalRamp": ["#431407", "#7C2D12", "#C2410C", "#EA580C", "#F97316", "#FDBA74", "#FED7AA", "#FFF7ED"] },
+      "dark-bg": { "role": "dark", "displayName": "Malam Slate", "canonical": "#0F172A", "tonalRamp": ["#020617", "#0F172A", "#1E293B", "#334155", "#475569", "#64748B", "#94A3B8", "#E2E8F0"] },
+      "dark-surface": { "role": "dark", "displayName": "Permukaan Gelap", "canonical": "#1E293B", "tonalRamp": ["#020617", "#0F172A", "#1E293B", "#334155", "#475569", "#64748B", "#94A3B8", "#E2E8F0"] },
+      "dark-border": { "role": "dark", "displayName": "Border Gelap", "canonical": "#334155", "tonalRamp": ["#020617", "#0F172A", "#1E293B", "#334155", "#475569", "#64748B", "#94A3B8", "#CBD5E1"] },
+      "dark-text": { "role": "dark", "displayName": "Teks Terang", "canonical": "#E2E8F0", "tonalRamp": ["#0F172A", "#1E293B", "#334155", "#475569", "#64748B", "#94A3B8", "#CBD5E1", "#E2E8F0"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Judul halaman besar dan judul halaman login (24px/800, tracking -0.025em)." },
+      "headline": { "displayName": "Headline", "purpose": "Brand di sidebar, nilai statistik, judul section (18px/800)." },
+      "title": { "displayName": "Title", "purpose": "Judul kartu, judul modal, judul dropdown (16px/700)." },
+      "body": { "displayName": "Body", "purpose": "Isi, tabel, deskripsi (14px/400, lebar baca 65–75ch)." },
+      "label": { "displayName": "Label", "purpose": "Label input, menu sidebar, tombol (14px/500)." }
+    },
+    "shadows": [
+      { "name": "rest-ringan", "value": "0 1px 2px 0 rgb(0 0 0 / 0.05)", "purpose": "Kartu & input saat diam — nyaris tak terlihat." },
+      { "name": "mengambang", "value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)", "purpose": "Dropdown profil & notifikasi yang terangkat di atas konten." },
+      { "name": "overlay", "value": "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)", "purpose": "Modal konfirmasi di atas overlay gelap." },
+      { "name": "angkat-hover", "value": "0 10px 25px -10px rgb(0 0 0 / 0.12)", "purpose": "Kartu statistik saat di-hover bersama translateY(-3px)." }
+    ],
+    "motion": [
+      { "name": "transisi-halaman", "value": "0.2s ease", "purpose": "Ganti halaman: fade + slide 10px via AnimatePresence." },
+      { "name": "fade-in-up", "value": "0.45s ease both", "purpose": "Kartu/data masuk, stagger 60ms per item." },
+      { "name": "modal-pop", "value": "0.28s ease both", "purpose": "Modal lama (CSS); modal framer memakai scale 0.96→1 dalam 0.18s." },
+      { "name": "dropdown", "value": "0.15s ease-out", "purpose": "Dropdown header & drawer mobile: fade + scale/slide." },
+      { "name": "hover-lift", "value": "transform .2s ease, box-shadow .2s ease", "purpose": "Kartu terangkat -3px saat hover." },
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Easing default transisi state." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Aksi utama tunggal per layar: Simpan, Login, Bayar.",
+      "html": "<button class=\"ds-btn-primary\">Simpan</button>",
+      "css": ".ds-btn-primary { background: #4F46E5; color: #FFFFFF; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 600; line-height: 1.5; padding: 10px 16px; border: none; border-radius: 12px; cursor: pointer; transition: background .15s ease, transform .15s ease, box-shadow .15s ease; } .ds-btn-primary:hover { background: #6366F1; transform: translateY(-1px); } .ds-btn-primary:active { transform: translateY(0); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #6366F1; } .ds-btn-primary:disabled { opacity: .6; cursor: not-allowed; transform: none; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Aksi sekunder: Batal, filter, aksi pendamping tombol utama.",
+      "html": "<button class=\"ds-btn-secondary\">Batal</button>",
+      "css": ".ds-btn-secondary { background: #FFFFFF; color: #475569; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 600; line-height: 1.5; padding: 8px 16px; border: 1px solid #E2E8F0; border-radius: 12px; cursor: pointer; transition: background .15s ease, border-color .15s ease; } .ds-btn-secondary:hover { background: #F8FAFC; border-color: #CBD5E1; } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 2px #E0E7FF; }"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Aksi destruktif: Hapus, konfirmasi berbahaya — selalu berpasangan dengan Batal.",
+      "html": "<button class=\"ds-btn-danger\">Hapus</button>",
+      "css": ".ds-btn-danger { background: #E11D48; color: #FFFFFF; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 600; line-height: 1.5; padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; transition: background .15s ease; } .ds-btn-danger:hover { background: #F43F5E; } .ds-btn-danger:focus-visible { outline: none; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #F43F5E; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Field formulir dengan label — dipakai di seluruh form kas.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field__label\">Nominal</span><input class=\"ds-input\" placeholder=\"Rp 0\" /></label>",
+      "css": ".ds-field { display: block; font-family: Inter, ui-sans-serif, system-ui, sans-serif; } .ds-field__label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; color: #475569; } .ds-input { display: block; width: 100%; box-sizing: border-box; background: #FFFFFF; color: #1E293B; border: 1px solid #E2E8F0; border-radius: 12px; padding: 10px 14px; font-family: inherit; font-size: 14px; line-height: 1.5; transition: border-color .15s ease, box-shadow .15s ease; } .ds-input::placeholder { color: #94A3B8; } .ds-input:hover { border-color: #CBD5E1; } .ds-input:focus { outline: none; border-color: #6366F1; box-shadow: 0 0 0 2px #E0E7FF; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Wadah utama data: kartu statistik, ringkasan, panel kosong.",
+      "html": "<div class=\"ds-card\"><p class=\"ds-card__label\">Kas Minggu Ini</p><p class=\"ds-card__value\">Rp 450.000</p></div>",
+      "css": ".ds-card { background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 20px; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); font-family: Inter, ui-sans-serif, system-ui, sans-serif; transition: transform .2s ease, box-shadow .2s ease; } .ds-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px -10px rgb(0 0 0 / 0.12); } .ds-card__label { margin: 0; font-size: 13px; font-weight: 500; color: #64748B; } .ds-card__value { margin: 8px 0 0; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; color: #1E293B; }"
+    },
+    {
+      "name": "Status Chip",
+      "kind": "chip",
+      "refersTo": "badge-success",
+      "description": "Badge status tiga lapis: soft bg + teks pekat + border tipis.",
+      "html": "<span class=\"ds-chip ds-chip--success\">Lunas</span> <span class=\"ds-chip ds-chip--danger\">Belum</span> <span class=\"ds-chip ds-chip--warning\">Menunggu</span> <span class=\"ds-chip ds-chip--neutral\">Anggota</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 4px; border: 1px solid; border-radius: 9999px; padding: 2px 10px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 12px; font-weight: 600; line-height: 1.5; } .ds-chip--success { background: #ECFDF5; color: #047857; border-color: #A7F3D0; } .ds-chip--success:hover { background: #D1FAE5; } .ds-chip--danger { background: #FFF1F2; color: #BE123C; border-color: #FECDD3; } .ds-chip--danger:hover { background: #FFE4E6; } .ds-chip--warning { background: #FFF7ED; color: #C2410C; border-color: #FED7AA; } .ds-chip--warning:hover { background: #FFEDD5; } .ds-chip--neutral { background: #F1F5F9; color: #334155; border-color: #E2E8F0; } .ds-chip--neutral:hover { background: #E2E8F0; }"
+    },
+    {
+      "name": "Navigation Item",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Item sidebar: aktif indigo-soft, hover slate-50, ikon 18px.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-item ds-nav-item--active\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/></svg>Dashboard</a><a class=\"ds-nav-item\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6\"/></svg>Transaksi</a></nav>",
+      "css": ".ds-nav { display: flex; flex-direction: column; gap: 4px; } .ds-nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 12px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 500; color: #475569; text-decoration: none; cursor: pointer; transition: background .15s ease, color .15s ease; } .ds-nav-item:hover { background: #F8FAFC; color: #1E293B; } .ds-nav-item:focus-visible { outline: none; box-shadow: 0 0 0 2px #E0E7FF; } .ds-nav-item--active, .ds-nav-item--active:hover { background: #EEF2FF; color: #4338CA; font-weight: 600; }"
+    },
+    {
+      "name": "Confirm Modal",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Modal konfirmasi destruktif: overlay gelap, panel membulat, animasi scale-fade.",
+      "html": "<div class=\"ds-modal-overlay\"><div class=\"ds-modal\"><p class=\"ds-modal__title\">Hapus transaksi?</p><p class=\"ds-modal__text\">Data yang dihapus tidak bisa dikembalikan.</p><div class=\"ds-modal__actions\"><button class=\"ds-modal__btn\">Batal</button><button class=\"ds-modal__btn ds-modal__btn--danger\">Hapus</button></div></div></div>",
+      "css": ".ds-modal-overlay { display: grid; place-items: center; background: rgba(2, 6, 23, 0.4); padding: 16px; } .ds-modal { background: #FFFFFF; border-radius: 16px; padding: 24px; max-width: 384px; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); font-family: Inter, ui-sans-serif, system-ui, sans-serif; animation: dsModalPop .18s ease both; } @keyframes dsModalPop { from { opacity: 0; transform: translateY(8px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } } .ds-modal__title { margin: 0; font-size: 16px; font-weight: 700; color: #1E293B; } .ds-modal__text { margin: 4px 0 0; font-size: 14px; color: #64748B; } .ds-modal__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; } .ds-modal__btn { background: #FFFFFF; color: #475569; font-family: inherit; font-size: 14px; font-weight: 600; padding: 8px 16px; border: 1px solid #E2E8F0; border-radius: 8px; cursor: pointer; transition: background .15s ease; } .ds-modal__btn:hover { background: #F8FAFC; } .ds-modal__btn--danger { background: #E11D48; color: #FFFFFF; border-color: #E11D48; } .ds-modal__btn--danger:hover { background: #F43F5E; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Kantin Ramah (The Friendly Counter)",
+    "overview": "Sistem ini memperlakukan aplikasi kas seperti kantin yang ramah: semua yang dibutuhkan tersaji jelas di depan, tanpa antrian berliku, tanpa hal tersembunyi. Suasana visualnya tenang dan terpercaya — permukaan putih/abu-abu muda yang bersih, satu aksen indigo yang tegas hanya muncul saat ada aksi, dan warna status yang langsung terbaca. Bukan aplikasi keuangan yang kaku dan seram, bukan pula mainan yang terlalu ceria: ini alat kerja sehari-hari organisasi yang enak dipakai setiap hari.\n\nKepadatannya sedang: informasi cukup rapat untuk efisien di layar HP, tapi tetap punya ruang napas di desktop. Sudut selalu membulat besar dan kontrol terasa \"ramah\" — sementara hierarki, kontras, dan warna aksen dibuat \"tegas\" supaya tidak ada ambiguitas mana tombol utama dan mana status.",
+    "keyCharacteristics": [
+      "Satu aksen indigo yang tenang, dipakai hemat hanya untuk aksi utama, fokus, dan navigasi aktif.",
+      "Permukaan datar dengan border tipis; bayangan hanya untuk lapisan yang mengambang.",
+      "Sudut membulat besar dan konsisten: 12px untuk kontrol, 16px untuk kartu.",
+      "Status selalu berpasangan: background lembut + teks pekat + border tipis.",
+      "Mode gelap adalah default, dibangun dari netral slate gelap yang sama."
+    ],
+    "rules": [
+      { "name": "The Calm Accent Rule", "body": "Indigo hanya boleh menyentuh kurang dari 10% layar: aksi utama, fokus, menu aktif. Permukaan indigo besar (hero, kartu penuh) dilarang — kelangkaannya membuat aksi terlihat.", "section": "colors" },
+      { "name": "The Soft-Status Rule", "body": "Setiap status selalu tiga lapis: background 50-an, teks 70-an, border 20-an dari hue yang sama. Tidak pernah teks berwarna telanjang di atas putih.", "section": "colors" },
+      { "name": "The Single-Family Rule", "body": "Hanya Inter. Tidak ada display font kedua, tidak ada italic dekoratif, tidak ada uppercase lebar — judul dibedakan dengan berat (800) dan tracking negatif, bukan dengan font lain.", "section": "typography" },
+      { "name": "The One-Gutter Rule", "body": "Semua konten memakai gutter yang sama (16/32px); tidak ada section yang masuk lebih dalam atau lebih keluar dari yang lain.", "section": "layout" },
+      { "name": "The Border-First Rule", "body": "Pemisah utama adalah border 1px slate-200, bukan bayangan. Kartu tidak pernah diberi bayangan tebal; bayangan hanya layak untuk lapisan yang benar-benar terangkat di atas konten.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do pakai indigo hanya untuk aksi utama, state fokus, dan menu aktif — sisanya netral slate.",
+      "Do pertahankan radius 12px untuk kontrol dan 16px untuk wadah di setiap layar baru.",
+      "Do beri status sebagai tiga lapis soft-bg + teks pekat + border tipis.",
+      "Do pakai border 1px slate-200 sebagai pemisah utama; bayangan hanya untuk dropdown/modal.",
+      "Do hormati mode gelap: permukaan slate-800 di atas background slate-900, teks slate-200.",
+      "Do beri judul hierarki lewat berat 800 + tracking negatif, bukan font baru."
+    ],
+    "donts": [
+      "Don't membuat permukaan indigo besar (hero/kartu penuh indigo) — aksen ini harus langka.",
+      "Don't memakai sudut tajam (0px) atau mencampur radius berbeda pada komponen sejenis.",
+      "Don't memakai teks slate-400 untuk informasi penting — kontrasnya di bawah 4.5:1.",
+      "Don't menumpuk bayangan tebal pada kartu datar atau memberi kartu bayangan ganda.",
+      "Don't menambahkan font selain Inter atau mengubah ukuran body (14px) secara acak.",
+      "Don't menampilkan data yang sama dengan cara berbeda di dua halaman — satu pola kartu, satu pola tabel."
+    ]
+  }
+}
