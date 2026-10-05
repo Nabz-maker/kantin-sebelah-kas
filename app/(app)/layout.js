@@ -10,14 +10,13 @@ export default function AppLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [showIntro, setShowIntro] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [sideOpen, setSideOpen] = useState(false);
   const [search, setSearch] = useState("");
   const menuRef = useRef(null);
 
   useEffect(() => {
-    const load = () => fetch("/api/auth/me").then((r) => r.json()).then((d) => { if (!d.user) router.push("/login"); else { setUser(d.user); if (!sessionStorage.getItem("kantin_intro")) setShowIntro(true); } });
+    const load = () => fetch("/api/auth/me").then((r) => r.json()).then((d) => { if (!d.user) router.push("/login"); else { setUser(d.user); } });
     load();
     window.addEventListener("user-updated", load);
     return () => window.removeEventListener("user-updated", load);
@@ -43,7 +42,6 @@ export default function AppLayout({ children }) {
   async function logout() {
     if (!confirm("Yakin ingin keluar?")) return;
     await fetch("/api/auth/logout", { method: "POST" });
-    sessionStorage.removeItem("kantin_intro");
     toast("Anda telah keluar. Sampai jumpa!");
     router.push("/login");
   }
@@ -120,11 +118,7 @@ export default function AppLayout({ children }) {
 
       <main className="px-4 pb-24 pt-6 md:px-8 md:pb-10">{children}</main>
       <AutoRefresh />
-      {showIntro && (
-        <div className="fixed inset-0 z-[100] grid place-items-center bg-white/90 backdrop-blur-sm" onClick={() => { setShowIntro(false); sessionStorage.setItem("kantin_intro", "1"); }}>
-          <video src="/animasi.webm" autoPlay muted playsInline className="max-h-[80vh] w-full max-w-2xl" onEnded={() => { setShowIntro(false); sessionStorage.setItem("kantin_intro", "1"); }} />
-        </div>
-      )}
+
 
       {/* Bottom nav mobile */}
       <nav className="fixed inset-x-0 bottom-0 z-40 flex justify-around border-t border-slate-200 bg-white py-2 md:hidden">
