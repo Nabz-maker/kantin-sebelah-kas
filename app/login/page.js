@@ -27,16 +27,16 @@ function LoginForm() {
 
   return (
     <form onSubmit={submit} className="space-y-4">
-      <h1 className="text-2xl font-extrabold tracking-tight">Selamat Datang Kembali</h1>
-      <p className="text-sm text-slate-500">Masuk untuk mengelola kas organisasi Anda.</p>
-      {err && <p className="animate-fade-in rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-600">{err}</p>}
+      <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">Selamat Datang Kembali</h1>
+      <p className="text-sm text-slate-600">Masuk untuk mengelola kas organisasi Anda.</p>
+      {err && <p role="alert" className="animate-fade-in rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">{err}</p>}
       <div>
         <label className={labelCls}>Email atau Username</label>
-        <input className={inputCls} value={form.login} onChange={(e) => setForm({ ...form, login: e.target.value })} placeholder="email@contoh.com" />
+        <input autoComplete="username" className={inputCls} value={form.login} onChange={(e) => setForm({ ...form, login: e.target.value })} placeholder="email@contoh.com" />
       </div>
       <div>
         <label className={labelCls}>Password</label>
-        <input type="password" className={inputCls} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="••••••••" />
+        <input autoComplete="current-password" type="password" className={inputCls} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="••••••••" />
       </div>
       <div className="flex items-center justify-between text-sm">
         <label className="flex items-center gap-2 text-slate-600"><input type="checkbox" checked={form.remember} onChange={(e) => setForm({ ...form, remember: e.target.checked })} className="rounded border-slate-300" /> Ingat saya</label>
