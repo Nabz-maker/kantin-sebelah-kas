@@ -50,8 +50,8 @@ export default function Dashboard() {
           ["Total Pengeluaran", rupiah(stats.pengeluaran), "text-rose-600"],
           ["Jumlah Anggota", stats.anggota, "text-slate-800"],
           ["Kas Bulan Ini", rupiah(stats.kasBulanIni), "text-orange-600"],
-        ].map(([label, value, cls]) => (
-          <div key={label} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        ].map(([label, value, cls], i) => (
+          <div key={label} className="hover-lift animate-fade-in-up rounded-2xl border border-slate-200 bg-white p-5 shadow-sm" style={{ animationDelay: `${i * 60}ms` }}>
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{label}</p>
             <p className={`mt-2 text-xl font-extrabold ${cls}`}>{value}</p>
           </div>
@@ -59,7 +59,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="hover-lift animate-fade-in-up rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h2 className="mb-4 font-bold">Pemasukan vs Pengeluaran</h2>
           <div className="h-64">
             <ResponsiveContainer>
@@ -75,7 +75,7 @@ export default function Dashboard() {
             </ResponsiveContainer>
           </div>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="hover-lift animate-fade-in-up rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h2 className="mb-4 font-bold">Perkembangan Saldo</h2>
           <div className="h-64">
             <ResponsiveContainer>
@@ -91,7 +91,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div className="animate-fade-in-up overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div className="border-b border-slate-100 p-5"><h2 className="font-bold">Transaksi Terbaru</h2></div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

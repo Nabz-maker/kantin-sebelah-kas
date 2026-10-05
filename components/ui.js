@@ -21,7 +21,7 @@ export function ConfirmModal({ open, title, text, onConfirm, onCancel }) {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/40 p-4" onClick={onCancel}>
-      <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+      <div className="animate-modal-pop w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
         <h3 className="text-base font-bold">{title}</h3>
         <p className="mt-1 text-sm text-slate-500">{text}</p>
         <div className="mt-5 flex justify-end gap-2">

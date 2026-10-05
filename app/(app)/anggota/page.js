@@ -67,7 +67,7 @@ export default function Anggota() {
       {items === null ? <Spinner /> : items.length === 0 ? <EmptyState text="Tidak ada anggota." /> : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((u) => (
-            <div key={u.id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div key={u.id} className="hover-lift rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
               <div className="flex items-center gap-3">
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-indigo-50 font-bold text-indigo-700">
                   {u.avatar ? <img src={u.avatar} alt="" className="h-11 w-11 rounded-xl object-cover" /> : u.name[0].toUpperCase()}
@@ -94,7 +94,7 @@ export default function Anggota() {
 
       {detail && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/40 p-4" onClick={() => setDetail(null)}>
-          <div className="w-full max-w-md rounded-2xl bg-white p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="animate-modal-pop w-full max-w-md rounded-2xl bg-white p-6" onClick={(e) => e.stopPropagation()}>
             <h2 className="text-lg font-bold">{detail.name}</h2>
             <dl className="mt-4 space-y-2 text-sm">
               {[["Username", detail.username], ["Email", detail.email], ["No. HP", detail.phone || "-"], ["Role", detail.role], ["Status", detail.status], ["Tanggal Bergabung", formatDate(detail.createdAt)]].map(([k, v]) => (
@@ -125,7 +125,7 @@ function MemberForm({ initial, onSave, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/40 p-4" onClick={onClose}>
-      <form onClick={(e) => e.stopPropagation()} onSubmit={submit} className="w-full max-w-md space-y-4 rounded-2xl bg-white p-6 shadow-xl">
+      <form onClick={(e) => e.stopPropagation()} onSubmit={submit} className="animate-modal-pop w-full max-w-md space-y-4 rounded-2xl bg-white p-6 shadow-xl">
         <h2 className="text-lg font-bold">{initial ? "Edit Anggota" : "Tambah Anggota"}</h2>
         <div><label className={labelCls}>Nama</label><input className={inputCls} value={form.name} onChange={set("name")} /></div>
         {!initial && <div><label className={labelCls}>Username</label><input className={inputCls} value={form.username} onChange={set("username")} /></div>}
