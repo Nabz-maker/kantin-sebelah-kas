@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from "recharts";
+import { motion } from "framer-motion";
 import Badge, { Spinner } from "@/components/ui";
 import { rupiah, formatDate } from "@/lib/utils";
 
@@ -51,10 +52,10 @@ export default function Dashboard() {
           ["Jumlah Anggota", stats.anggota, "text-slate-800"],
           ["Kas Bulan Ini", rupiah(stats.kasBulanIni), "text-orange-600"],
         ].map(([label, value, cls], i) => (
-          <div key={label} className="hover-lift animate-fade-in-up rounded-2xl border border-slate-200 bg-white p-5 shadow-sm" style={{ animationDelay: `${i * 60}ms` }}>
+          <motion.div key={label} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06, duration: 0.35 }} className="hover-lift rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{label}</p>
             <p className={`mt-2 text-xl font-extrabold ${cls}`}>{value}</p>
-          </div>
+          </motion.div>
         ))}
       </div>
 
