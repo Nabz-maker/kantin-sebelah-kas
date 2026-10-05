@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 export default function Badge({ children, color = "slate" }) {
   const map = {
     green: "bg-emerald-50 text-emerald-700 border-emerald-200",
@@ -21,14 +23,14 @@ export function ConfirmModal({ open, title, text, onConfirm, onCancel }) {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/40 p-4" onClick={onCancel}>
-      <div className="animate-modal-pop w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+      <motion.div initial={{ opacity: 0, scale: 0.96, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.18 }} className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
         <h3 className="text-base font-bold">{title}</h3>
         <p className="mt-1 text-sm text-slate-500">{text}</p>
         <div className="mt-5 flex justify-end gap-2">
           <button onClick={onCancel} className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50">Batal</button>
           <button onClick={onConfirm} className="rounded-lg bg-rose-600 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-500">Hapus</button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

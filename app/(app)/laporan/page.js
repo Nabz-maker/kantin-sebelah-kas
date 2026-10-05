@@ -68,8 +68,8 @@ export default function Laporan() {
               <YAxis tick={{ fontSize: 11 }} />
               <Tooltip formatter={(v) => rupiah(v)} />
               <Legend />
-              <Bar dataKey="pemasukan" fill="#10B981" radius={[6, 6, 0, 0]} isAnimationActive={false} />
-              <Bar dataKey="pengeluaran" fill="#F43F5E" radius={[6, 6, 0, 0]} isAnimationActive={false} />
+              <Bar dataKey="pemasukan" fill="#10B981" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="pengeluaran" fill="#F43F5E" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

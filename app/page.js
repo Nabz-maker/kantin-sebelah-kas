@@ -1,8 +1,14 @@
 "use client";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, BarChart3, ShieldCheck, Users, Wallet, Plus } from "lucide-react";
 
-const displayCls = { fontFamily: "var(--font-display), system-ui, sans-serif" };
+const displayCls = { fontFamily: "var(--font-display)" };
+const fadeUp = {
+  hidden: { opacity: 0, y: 26 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+const stagger = { show: { transition: { staggerChildren: 0.09 } } };
 
 const features = [
   [BarChart3, "Laporan Jelas", "Grafik pemasukan dan pengeluaran yang mudah dibaca."],
@@ -16,7 +22,12 @@ const days = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
 
 function DashboardMock() {
   return (
-    <div className="animate-fade-in-up relative mx-auto w-full max-w-md rounded-3xl border border-white/10 bg-slate-900/85 p-5 shadow-2xl shadow-black/50">
+    <motion.div
+      initial={{ opacity: 0, y: 30, rotate: -1.5 }}
+      animate={{ opacity: 1, y: [0, -12, 0], rotate: -1.5 }}
+      transition={{ opacity: { duration: 0.6, delay: 0.35 }, y: { duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.9 } }}
+      className="relative mx-auto w-full max-w-md rounded-3xl border border-white/10 bg-slate-900/85 p-5 shadow-2xl shadow-black/50"
+    >
       <div className="flex items-center justify-between">
         <div>
           <p className="text-xs font-medium text-slate-400">Ringkasan Kas</p>
@@ -27,9 +38,11 @@ function DashboardMock() {
 
       <div className="mt-5 flex h-28 items-end gap-2">
         {bars.map((h, i) => (
-          <div
+          <motion.div
             key={days[i]}
-            style={{ height: `${h}%` }}
+            initial={{ height: 0 }}
+            animate={{ height: `${h}%` }}
+            transition={{ duration: 0.6, delay: 0.6 + i * 0.08, ease: "easeOut" }}
             className={`flex-1 rounded-md ${i === 5 ? "bg-indigo-500" : "bg-slate-700"}`}
           />
         ))}
@@ -54,7 +67,7 @@ function DashboardMock() {
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -65,7 +78,7 @@ export default function Landing() {
       <header className="sticky top-0 z-30 border-b border-white/10 bg-slate-950">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2.5">
-            <img src="/logo.png" alt="Logo Kantin Samping" width={36} height={36} decoding="async" className="h-9 w-9 rounded-xl object-cover shadow-lg shadow-black/40" />
+            <img src="/logo.png" alt="Logo" width={36} height={36} decoding="async" className="h-9 w-9 rounded-xl object-cover shadow-lg shadow-black/40" />
             <p style={displayCls} className="text-lg font-extrabold tracking-tight text-white">Kantin Samping</p>
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
@@ -82,38 +95,47 @@ export default function Landing() {
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-slate-950">
-        <div aria-hidden="true" className="glow-decor pointer-events-none absolute -left-40 -top-40 h-[30rem] w-[30rem] rounded-full bg-indigo-600/30 blur-3xl" />
-        <div aria-hidden="true" className="glow-decor pointer-events-none absolute -bottom-52 -right-40 h-[28rem] w-[28rem] rounded-full bg-rose-600/20 blur-3xl" />
+        <div className="pointer-events-none absolute -left-40 -top-40 h-[30rem] w-[30rem] rounded-full bg-indigo-600/30 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-52 -right-40 h-[28rem] w-[28rem] rounded-full bg-rose-600/20 blur-3xl" />
 
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 md:grid-cols-2 md:py-24">
           <div>
-            <span className="animate-fade-in mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-semibold text-indigo-300">
+            <motion.span
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45 }}
+              className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-semibold text-indigo-300"
+            >
               <span className="h-1.5 w-1.5 rounded-full bg-indigo-400" /> Transparan untuk semua anggota
-            </span>
+            </motion.span>
 
             <h1 style={displayCls} className="max-w-xl text-4xl font-extrabold leading-[1.05] tracking-tight text-white md:text-5xl lg:text-6xl">
-              <span className="block">Kas jelas,</span>
-              <span className="block">token pun <span className="text-indigo-400">tenang.</span></span>
+              <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="block">
+                Kas jelas,
+              </motion.span>
+              <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="block">
+                token pun <span className="text-indigo-400">tenang.</span>
+              </motion.span>
             </h1>
 
-            <p className="mt-5 max-w-md text-sm leading-relaxed text-slate-300 md:text-base">
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="mt-5 max-w-md text-sm leading-relaxed text-slate-300 md:text-base">
               Jangan lupa bayar kas, kalo lupa token berisik.
-            </p>
+            </motion.p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }} className="mt-8 flex flex-wrap gap-3">
               <Link href="/login" className="group inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-3.5 text-sm font-semibold text-white shadow-xl shadow-black/40 transition hover:bg-indigo-500 active:scale-[0.98]">
                 Login dulu woi <ArrowRight size={16} className="transition group-hover:translate-x-1" />
               </Link>
               <a href="#cara-kerja" className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10">
                 Lihat cara kerja
               </a>
-            </div>
+            </motion.div>
 
-            <p className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium text-slate-400">
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.55 }} className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium text-slate-400">
               <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-indigo-400" /> Gratis untuk organisasi</span>
               <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-indigo-400" /> Admin & anggota</span>
               <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-indigo-400" /> Bisa dipasang di HP (PWA)</span>
-            </p>
+            </motion.p>
           </div>
 
           <DashboardMock />
@@ -122,31 +144,31 @@ export default function Landing() {
 
       {/* Fitur */}
       <section id="fitur" className="bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
-          <p className="text-sm font-semibold text-indigo-600">FITUR</p>
-          <h2 style={displayCls} className="mt-2 max-w-lg text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+        <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={stagger} className="mx-auto max-w-6xl px-4 py-16 md:py-24">
+          <motion.p variants={fadeUp} className="text-sm font-semibold text-indigo-600">FITUR</motion.p>
+          <motion.h2 variants={fadeUp} style={displayCls} className="mt-2 max-w-lg text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
             Semua yang dibutuhkan kas organisasi
-          </h2>
+          </motion.h2>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {features.map(([Icon, title, desc]) => (
-              <div key={title} className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+              <motion.div key={title} variants={fadeUp} className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <Icon size={22} className="text-indigo-600" />
                 <h3 className="mt-4 font-bold text-slate-900">{title}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-slate-500">{desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Cara Kerja */}
       <section id="cara-kerja" className="bg-[#F8FAFC]">
-        <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
-          <p className="text-sm font-semibold text-indigo-600">CARA KERJA</p>
-          <h2 style={displayCls} className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+        <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={stagger} className="mx-auto max-w-6xl px-4 py-16 md:py-24">
+          <motion.p variants={fadeUp} className="text-sm font-semibold text-indigo-600">CARA KERJA</motion.p>
+          <motion.h2 variants={fadeUp} style={displayCls} className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
             Tiga langkah, kas rapi
-          </h2>
+          </motion.h2>
 
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {[
@@ -154,25 +176,25 @@ export default function Landing() {
               ["Catat pemasukan & pengeluaran kas", "Transaksi masuk-keluar tercatat lengkap dengan keterangan."],
               ["Lihat saldo, laporan, dan status iuran kapan saja", "Dashboard segar tiap 5 detik, laporan siap dibagikan."],
             ].map(([t, d], i) => (
-              <div key={t} className="relative rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <motion.div key={t} variants={fadeUp} className="relative rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <span style={displayCls} className="block text-4xl font-extrabold leading-none tracking-tight text-indigo-500">
                   {i + 1}
                 </span>
                 <h3 className="mt-4 font-bold text-slate-900">{t}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-slate-500">{d}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* FAQ */}
       <section id="faq" className="bg-white">
-        <div className="mx-auto max-w-3xl px-4 py-16 md:py-24">
-          <p className="text-sm font-semibold text-indigo-600">FAQ</p>
-          <h2 style={displayCls} className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+        <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={stagger} className="mx-auto max-w-3xl px-4 py-16 md:py-24">
+          <motion.p variants={fadeUp} className="text-sm font-semibold text-indigo-600">FAQ</motion.p>
+          <motion.h2 variants={fadeUp} style={displayCls} className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
             Pertanyaan yang sering muncul
-          </h2>
+          </motion.h2>
 
           <div className="mt-8 space-y-3">
             {[
@@ -180,24 +202,30 @@ export default function Landing() {
               ["Siapa yang bisa melihat data kas?", "Semua anggota dapat melihat saldo dan riwayat transaksi, namun hanya admin yang dapat menambah, mengubah, atau menghapus data."],
               ["Bagaimana cara mencatat iuran?", "Admin membuat tagihan mingguan di menu Pembayaran Kas, lalu menandai anggota yang sudah membayar."],
             ].map(([q, a]) => (
-              <details key={q} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <motion.details key={q} variants={fadeUp} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-slate-900">
                   {q}
                   <Plus size={18} className="shrink-0 text-indigo-600 transition duration-200 group-open:rotate-45" />
                 </summary>
                 <p className="mt-2.5 text-sm leading-relaxed text-slate-500">{a}</p>
-              </details>
+              </motion.details>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* CTA */}
       <section className="bg-white pb-16">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="relative overflow-hidden rounded-3xl bg-slate-950 px-6 py-14 text-center md:px-12">
-            <div aria-hidden="true" className="glow-decor pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-indigo-600/30 blur-3xl" />
-            <div aria-hidden="true" className="glow-decor pointer-events-none absolute -bottom-32 -right-20 h-72 w-72 rounded-full bg-rose-600/20 blur-3xl" />
+          <motion.div
+            initial={{ opacity: 0, y: 26 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5 }}
+            className="relative overflow-hidden rounded-3xl bg-slate-950 px-6 py-14 text-center md:px-12"
+          >
+            <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-indigo-600/30 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-32 -right-20 h-72 w-72 rounded-full bg-rose-600/20 blur-3xl" />
             <div className="relative">
               <h2 style={displayCls} className="mx-auto max-w-xl text-3xl font-extrabold tracking-tight text-white md:text-4xl">
                 Siap membuat kas organisasi transparan?
@@ -209,7 +237,7 @@ export default function Landing() {
                 Login dulu woi <ArrowRight size={16} className="transition group-hover:translate-x-1" />
               </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
