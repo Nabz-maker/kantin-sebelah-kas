@@ -57,7 +57,16 @@ function ChartTip({ active, payload, label }) {
 }
 
 function VideoIntro() {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return !localStorage.getItem("dashboardIntroShown");
+  });
+
+  const handleVideoEnd = () => {
+    localStorage.setItem("dashboardIntroShown", "true");
+    setShow(false);
+  };
+
   return show ? (
     <motion.div
       initial={{ opacity: 1 }}
@@ -68,7 +77,7 @@ function VideoIntro() {
       <video
         autoPlay
         muted
-        onEnded={() => setShow(false)}
+        onEnded={handleVideoEnd}
         className="w-full h-full object-contain"
       >
         <source src="/animasi.webm" type="video/webm" />
