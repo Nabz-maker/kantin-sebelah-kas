@@ -52,7 +52,7 @@ async function main() {
   await prisma.setting.upsert({
     where: { id: "singleton" },
     update: {},
-    create: { id: "singleton", organizationName: "Kantin Sebelah Organisasi", cashAmount: 50000 },
+    create: { id: "singleton", organizationName: "Kantin Samping Organisasi", cashAmount: 50000 },
   });
 
   console.log("Seed selesai. Admin: admin@kaskita.id / admin123, Member: budi@kaskita.id / member123");

@@ -8,7 +8,7 @@ export default function Landing() {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <div className="flex items-center gap-2.5">
             <img src="/logo.png" alt="Logo" className="h-9 w-9 rounded-xl object-cover" />
-            <p className="text-lg font-extrabold tracking-tight">Kantin Sebelah</p>
+            <p className="text-lg font-extrabold tracking-tight">Kantin Samping</p>
           </div>
           <div className="flex items-center gap-2">
             <Link href="/login" className="rounded-xl px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100">Login</Link>
@@ -59,7 +59,7 @@ export default function Landing() {
         <h2 className="text-2xl font-extrabold tracking-tight">FAQ</h2>
         <div className="mt-6 divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white">
           {[
-            ["Apakah Kantin Sebelah gratis?", "Ya, Kantin Sebelah dapat digunakan gratis untuk mengelola kas organisasi Anda."],
+            ["Apakah Kantin Samping gratis?", "Ya, Kantin Samping dapat digunakan gratis untuk mengelola kas organisasi Anda."],
             ["Siapa yang bisa melihat data kas?", "Semua anggota dapat melihat saldo dan riwayat transaksi, namun hanya admin yang dapat menambah, mengubah, atau menghapus data."],
             ["Bagaimana cara mencatat iuran?", "Admin membuat tagihan bulanan di menu Pembayaran Kas, lalu menandai anggota yang sudah membayar."],
           ].map(([q, a]) => (
@@ -71,7 +71,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <footer className="border-t border-slate-200 py-8 text-center text-sm text-slate-400">© 2026 Kantin Sebelah. Semua hak dilindungi.</footer>
+      <footer className="border-t border-slate-200 py-8 text-center text-sm text-slate-400">© 2026 Kantin Samping. Semua hak dilindungi.</footer>
     </div>
   );
 }

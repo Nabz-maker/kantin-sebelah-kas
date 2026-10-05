@@ -57,7 +57,7 @@ export default function AppLayout({ children }) {
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col border-r border-slate-200 bg-white md:flex">
         <div className="flex h-16 items-center gap-2.5 border-b border-slate-100 px-5">
           <img src="/logo.png" alt="Logo" className="h-9 w-9 rounded-xl object-cover" />
-          <p className="text-lg font-extrabold tracking-tight text-slate-800">Kantin Sebelah</p>
+          <p className="text-lg font-extrabold tracking-tight text-slate-800">Kantin Samping</p>
         </div>
         <nav className="flex-1 space-y-1 p-3">
           {menus.map((m) => (
@@ -74,7 +74,7 @@ export default function AppLayout({ children }) {
           <div className="absolute inset-0 bg-slate-950/40" />
           <aside className="absolute inset-y-0 left-0 w-64 bg-white p-3" onClick={(e) => e.stopPropagation()}>
             <div className="mb-2 flex items-center justify-between px-2 pt-1">
-              <p className="text-lg font-extrabold">Kantin Sebelah</p>
+              <p className="text-lg font-extrabold">Kantin Samping</p>
               <button onClick={() => setSideOpen(false)} aria-label="Tutup"><X size={20} /></button>
             </div>
             {menus.map((m) => (

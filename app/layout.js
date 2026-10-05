@@ -5,7 +5,7 @@ import ThemeSync from "@/components/ThemeSync";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
-export const metadata = { title: "Kantin Sebelah — Kelola Uang Kas Digital", description: "Catat pemasukan, pengeluaran, dan pembayaran kas organisasi.", manifest: "/manifest.json", icons: { icon: "/pwa-192.png", apple: "/pwa-192.png" } };
+export const metadata = { title: "Kantin Samping — Kelola Uang Kas Digital", description: "Catat pemasukan, pengeluaran, dan pembayaran kas organisasi.", manifest: "/manifest.json", icons: { icon: "/pwa-192.png", apple: "/pwa-192.png" } };
 
 export default function RootLayout({ children }) {
   return (

@@ -30,7 +30,7 @@ export default function RegisterPage() {
     <div className="grid min-h-screen place-items-center bg-[#F8FAFC] px-4 py-10">
       <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
         <h1 className="text-2xl font-extrabold tracking-tight">Daftar Akun</h1>
-        <p className="mt-1 text-sm text-slate-500">Buat akun Kantin Sebelah baru.</p>
+        <p className="mt-1 text-sm text-slate-500">Buat akun Kantin Samping baru.</p>
         {err && <p className="mt-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-600">{err}</p>}
         <form onSubmit={submit} className="mt-5 space-y-4">
           <div><label className={labelCls}>Nama Lengkap</label><input className={inputCls} value={form.name} onChange={set("name")} placeholder="Nama lengkap" /></div>

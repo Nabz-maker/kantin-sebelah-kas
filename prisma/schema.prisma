@@ -62,7 +62,7 @@ model Category {
 
 model Setting {
   id               String  @id @default("singleton")
-  organizationName String  @default("Kantin Sebelah Organisasi")
+  organizationName String  @default("Kantin Samping Organisasi")
   cashName         String  @default("Kas Utama")
   cashAmount       Int     @default(50000)
   logo             String?
