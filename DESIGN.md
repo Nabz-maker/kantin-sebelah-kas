@@ -24,11 +24,11 @@ colors:
   dark-text: "#E2E8F0"
 typography:
   display:
-    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "1.5rem"
+    fontFamily: "Bricolage Grotesque, Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(2.25rem, 5vw, 3.75rem)"
     fontWeight: 800
-    lineHeight: 1.25
-    letterSpacing: "-0.025em"
+    lineHeight: 1.05
+    letterSpacing: "-0.02em"
   headline:
     fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1.125rem"
@@ -166,11 +166,11 @@ Paletnya tenang dan hemat: satu aksen biru-ungu di atas netral slate kalem, dita
 
 ## Typography
 
-**Display Font:** Inter (dengan `ui-sans-serif, system-ui, sans-serif`)
-**Body Font:** Inter (dengan `ui-sans-serif, system-ui, sans-serif`)
+**Display Font:** Bricolage Grotesque (dengan fallback `Inter, ui-sans-serif, system-ui, sans-serif`) — untuk judul hero/merek (halaman login, panggung merek).
+**Body Font:** Inter (dengan `ui-sans-serif, system-ui, sans-serif`) — seluruh UI produk.
 **Label/Mono Font:** — tidak ada font terpisah.
 
-**Character:** Satu keluarga sans-serif geometris-netral dipakai untuk semuanya. Kombinasi berat 800 untuk judul dan 400 untuk isi memberi rasanya "ramah tapi tegas": ringan dibaca, tegas di hierarki.
+**Character:** Dua keluarga: satu display yang berkarakter dan sedikit quirky (Bricolage Grotesque) memberi kepribadian di momen merek, sementara Inter yang netral menjaga UI produk tetap ringan dibaca dan konsisten.
 
 ### Hierarchy
 - **Display** (800, 24px/1.5rem, line-height 1.25, tracking -0.025em): judul halaman besar dan judul halaman login.
@@ -181,7 +181,7 @@ Paletnya tenang dan hemat: satu aksen biru-ungu di atas netral slate kalem, dita
 - **Badge** (600, 12px): teks chip status — satu-satunya ukuran di bawah body.
 
 ### Named Rules
-**The Single-Family Rule.** Hanya Inter. Tidak ada display font kedua, tidak ada italic dekoratif, tidak ada uppercase lebar — judul dibedakan dengan berat (800) dan tracking negatif, bukan dengan font lain.
+**The Two-Family Rule.** Bricolage Grotesque hanya untuk display/brand (judul hero, logo wordmark); Inter untuk semua UI produk. Tidak ada font ketiga, tidak ada italic dekoratif — judul UI dibedakan dengan berat (800) dan tracking negatif.
 
 ## Layout
 
@@ -275,5 +275,5 @@ Overlay slate-950/40 memenuhi layar; panel putih radius 16px, padding 24px, Shad
 - **Don't** memakai sudut tajam (0px) atau mencampur radius berbeda pada komponen sejenis.
 - **Don't** memakai teks slate-400 untuk informasi penting — kontrasnya di bawah 4.5:1.
 - **Don't** menumpuk bayangan tebal pada kartu datar atau memberi kartu bayangan ganda.
-- **Don't** menambahkan font selain Inter atau mengubah ukuran body (14px) secara acak.
+- **Don't** menambahkan font ketiga di luar Bricolage Grotesque (display) dan Inter (UI), atau mengubah ukuran body (14px) secara acak.
 - **Don't** menampilkan data yang sama dengan cara berbeda di dua halaman — satu pola kartu, satu pola tabel.
