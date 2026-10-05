@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { LayoutDashboard, ArrowLeftRight, Wallet, Users, FileBarChart, UserCircle, Settings, LogOut, Search, Bell, Menu, X } from "lucide-react";
+import { LayoutDashboard, ArrowLeftRight, Wallet, Users, FileBarChart, UserCircle, Settings, LogOut, Search, Bell, Menu, X, ScrollText } from "lucide-react";
 import { toast } from "@/components/ToastHost";
 import AutoRefresh from "@/components/AutoRefresh";
 
@@ -34,6 +34,7 @@ export default function AppLayout({ children }) {
     { href: "/transaksi", label: "Transaksi", icon: ArrowLeftRight },
     { href: "/pembayaran", label: "Pembayaran Kas", icon: Wallet },
     { href: "/anggota", label: "Anggota", icon: Users },
+    { href: "/aktivitas", label: "Log Login", icon: ScrollText, admin: true },
     { href: "/laporan", label: "Laporan", icon: FileBarChart },
     { href: "/profil", label: "Profil", icon: UserCircle },
     { href: "/pengaturan", label: "Pengaturan", icon: Settings, admin: true },

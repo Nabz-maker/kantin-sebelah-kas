@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
 const SECRET = new TextEncoder().encode(process.env.SESSION_SECRET || "kaskita-dev-secret");
-const PROTECTED = ["/dashboard", "/transaksi", "/pembayaran", "/anggota", "/laporan", "/profil", "/pengaturan"];
-const ADMIN_ONLY = ["/pengaturan"];
+const PROTECTED = ["/dashboard", "/transaksi", "/pembayaran", "/anggota", "/laporan", "/profil", "/pengaturan", "/aktivitas"];
+const ADMIN_ONLY = ["/pengaturan", "/aktivitas"];
 
 export async function middleware(req) {
   const { pathname } = req.nextUrl;
@@ -29,4 +29,4 @@ export async function middleware(req) {
   return NextResponse.next();
 }
 
-export const config = { matcher: ["/dashboard/:path*", "/transaksi/:path*", "/pembayaran/:path*", "/anggota/:path*", "/laporan/:path*", "/profil/:path*", "/pengaturan/:path*"] };
+export const config = { matcher: ["/dashboard/:path*", "/transaksi/:path*", "/pembayaran/:path*", "/anggota/:path*", "/laporan/:path*", "/profil/:path*", "/pengaturan/:path*", "/aktivitas/:path*"] };

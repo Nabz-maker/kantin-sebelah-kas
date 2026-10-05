@@ -72,6 +72,15 @@ model Setting {
   notifPayment     Boolean @default(true)
 }
 
+model LoginLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  name      String
+  email     String?
+  ip        String?
+  createdAt DateTime @default(now())
+}
+
 model ResetToken {
   id        String   @id @default(cuid())
   userId    String

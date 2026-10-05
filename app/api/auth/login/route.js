@@ -16,5 +16,13 @@ export async function POST(req) {
   if (user.status !== "aktif") return NextResponse.json({ error: "Akun Anda dinonaktifkan." }, { status: 403 });
 
   await createSession(user, true);
+  await prisma.loginLog.create({
+    data: {
+      userId: user.id,
+      name: user.name,
+      email: user.email,
+      ip: req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || null,
+    },
+  });
   return NextResponse.json({ ok: true, user: { id: user.id, name: user.name, role: user.role } });
 }
