@@ -231,7 +231,7 @@ export default function Landing() {
                 Siap membuat kas organisasi transparan?
               </h2>
               <p className="mx-auto mt-3 max-w-md text-sm text-slate-300">
-                Buat akun sekarang dan catat transaksi pertama Anda hari ini juga.
+                Masuk dan lanjutkan catatan kas organisasi Anda hari ini juga.
               </p>
               <Link href="/login" className="group mt-7 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-black/40 transition hover:bg-indigo-500 active:scale-[0.98]">
                 Login dulu woi <ArrowRight size={16} className="transition group-hover:translate-x-1" />
