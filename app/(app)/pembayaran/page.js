@@ -9,7 +9,7 @@ export default function Pembayaran() {
   const [items, setItems] = useState(null);
   const now = new Date();
   const [filters, setFilters] = useState({ month: now.getMonth() + 1, year: now.getFullYear(), status: "semua", name: "" });
-  const [gen, setGen] = useState({ month: now.getMonth() + 1, year: now.getFullYear(), period: "bulanan", week: 1, amount: "" });
+  const [gen, setGen] = useState({ month: now.getMonth() + 1, year: now.getFullYear(), period: "bulanan", week: 1, amount: "", description: "" });
 
   const load = useCallback(() => {
     const qs = new URLSearchParams();
@@ -34,7 +34,7 @@ export default function Pembayaran() {
   }
 
   async function generate() {
-    const payload = { month: gen.month, year: gen.year, week: gen.period === "mingguan" ? Number(gen.week) : 0, amount: gen.amount };
+    const payload = { month: gen.month, year: gen.year, week: gen.period === "mingguan" ? Number(gen.week) : 0, amount: gen.amount, description: gen.description };
     const res = await fetch("/api/payments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     const d = await res.json();
     if (!res.ok) return toast(d.error || "Gagal membuat tagihan.", false);
@@ -62,6 +62,7 @@ export default function Pembayaran() {
           <div><label className="mb-1 block text-xs font-semibold text-slate-500">Bulan</label><input type="number" min="1" max="12" className={inputCls} value={gen.month} onChange={(e) => setGen({ ...gen, month: e.target.value })} /></div>
           <div><label className="mb-1 block text-xs font-semibold text-slate-500">Tahun</label><input type="number" className={inputCls} value={gen.year} onChange={(e) => setGen({ ...gen, year: e.target.value })} /></div>
           <div><label className="mb-1 block text-xs font-semibold text-slate-500">Nominal (Rp)</label><input type="number" min="1" className={inputCls} value={gen.amount} onChange={(e) => setGen({ ...gen, amount: e.target.value })} placeholder="kosong = nominal setting" /></div>
+          <div><label className="mb-1 block text-xs font-semibold text-slate-500">Deskripsi</label><input className={inputCls} value={gen.description} onChange={(e) => setGen({ ...gen, description: e.target.value })} placeholder="cth: Iuran kebersihan bulan ini" /></div>
           <button onClick={generate} className={btnPrimary}>Buat Tagihan</button>
         </div>
       )}
@@ -82,7 +83,7 @@ export default function Pembayaran() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead><tr className="text-left text-xs uppercase tracking-wide text-slate-400">
-                <th className="px-5 py-3">Nama</th><th className="px-5 py-3">Bulan</th><th className="px-5 py-3">Nominal</th>
+                <th className="px-5 py-3">Nama</th><th className="px-5 py-3">Bulan</th><th className="px-5 py-3">Nominal</th><th className="px-5 py-3">Deskripsi</th>
                 <th className="px-5 py-3">Status</th><th className="px-5 py-3">Tanggal Bayar</th>{isAdmin && <th className="px-5 py-3">Aksi</th>}
               </tr></thead>
               <tbody>
@@ -91,6 +92,7 @@ export default function Pembayaran() {
                     <td className="px-5 py-3 font-medium">{p.user?.name}</td>
                     <td className="px-5 py-3 text-slate-500">{p.week ? `Minggu ke-${p.week}, ` : ""}{bulanName(p.month)} {p.year}</td>
                     <td className="px-5 py-3 font-semibold">{rupiah(p.amount)}</td>
+                    <td className="px-5 py-3 text-slate-500">{p.description || "-"}</td>
                     <td className="px-5 py-3">{statusBadge(p.status)}</td>
                     <td className="px-5 py-3 text-slate-500">{formatDate(p.paidAt)}</td>
                     {isAdmin && <td className="px-5 py-3">

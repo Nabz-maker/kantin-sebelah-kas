@@ -33,7 +33,7 @@ export async function GET(req) {
 export async function POST(req) {
   const s = await getSession();
   if (!s || s.role !== "admin") return NextResponse.json({ error: "Hanya admin." }, { status: 403 });
-  const { month, year, week, amount } = await req.json().catch(() => ({}));
+  const { month, year, week, amount, description } = await req.json().catch(() => ({}));
   const m = Number(month), y = Number(year);
   const w = week === undefined || week === null || week === "" ? 0 : Number(week);
   if (!m || !y || (w < 0 || w > 53)) return NextResponse.json({ error: "Bulan, tahun, dan minggu wajib valid." }, { status: 400 });
@@ -44,7 +44,7 @@ export async function POST(req) {
   let created = 0;
   for (const u of members) {
     const exists = await prisma.cashPayment.findUnique({ where: { userId_month_year_week: { userId: u.id, month: m, year: y, week: w } } });
-    if (!exists) { await prisma.cashPayment.create({ data: { userId: u.id, month: m, year: y, week: w, amount: finalAmount } }); created++; }
+    if (!exists) { await prisma.cashPayment.create({ data: { userId: u.id, month: m, year: y, week: w, amount: finalAmount, description: description?.trim() || null } }); created++; }
   }
   return NextResponse.json({ ok: true, created });
 }

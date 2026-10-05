@@ -45,6 +45,7 @@ model CashPayment {
   year      Int
   week      Int      @default(0) // 0 = bulanan, 1-53 = minggu ke-
   amount    Int
+  description String?
   status    String   @default("belum") // lunas | belum | terlambat
   paidAt    DateTime?
   createdAt DateTime @default(now())
