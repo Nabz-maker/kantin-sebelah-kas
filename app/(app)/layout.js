@@ -121,8 +121,8 @@ export default function AppLayout({ children }) {
       <main className="px-4 pb-24 pt-6 md:px-8 md:pb-10">{children}</main>
       <AutoRefresh />
       {showIntro && (
-        <div className="fixed inset-0 z-[100] grid place-items-center bg-slate-950/90" onClick={() => { setShowIntro(false); sessionStorage.setItem("kantin_intro", "1"); }}>
-          <video src="/animasi.mp4" autoPlay muted playsInline className="max-h-[80vh] w-full max-w-2xl" onEnded={() => { setShowIntro(false); sessionStorage.setItem("kantin_intro", "1"); }} />
+        <div className="fixed inset-0 z-[100] grid place-items-center" onClick={() => { setShowIntro(false); sessionStorage.setItem("kantin_intro", "1"); }}>
+          <video src="/animasi.webm" autoPlay muted playsInline className="max-h-[80vh] w-full max-w-2xl" onEnded={() => { setShowIntro(false); sessionStorage.setItem("kantin_intro", "1"); }} />
         </div>
       )}
 
