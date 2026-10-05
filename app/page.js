@@ -55,8 +55,8 @@ function DashboardMock() {
 
       <div className="mt-5 space-y-2 border-t border-white/10 pt-4">
         {[
-          ["Andi Pratama", "Lunas", "emerald"],
-          ["Sari Wulandari", "Belum", "rose"],
+          ["Haikal", "Lunas", "emerald"],
+          ["Ridho", "Belum", "rose"],
         ].map(([name, status, tone]) => (
           <div key={name} className="flex items-center justify-between">
             <span className="text-sm text-slate-300">{name}</span>
