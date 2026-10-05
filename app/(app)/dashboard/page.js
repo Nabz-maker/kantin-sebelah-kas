@@ -56,6 +56,27 @@ function ChartTip({ active, payload, label }) {
   );
 }
 
+function VideoIntro() {
+  const [show, setShow] = useState(true);
+  return show ? (
+    <motion.div
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.6 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+    >
+      <video
+        autoPlay
+        muted
+        onEnded={() => setShow(false)}
+        className="w-full h-full object-contain"
+      >
+        <source src="/animasi.webm" type="video/webm" />
+      </video>
+    </motion.div>
+  ) : null;
+}
+
 export default function Dashboard() {
   const [range, setRange] = useState("month");
   const [data, setData] = useState(null);
@@ -86,7 +107,9 @@ export default function Dashboard() {
   ];
 
   return (
-    <motion.div initial="hidden" animate="show" variants={stagger} className="space-y-6">
+    <>
+      <VideoIntro />
+      <motion.div initial="hidden" animate="show" variants={stagger} className="space-y-6">
       {unpaid.length > 0 && (
         <motion.div variants={rise} className="flex items-start gap-3 rounded-2xl border border-amber-300 bg-amber-50 p-4">
           <BellRing size={18} className="mt-0.5 shrink-0 text-amber-700" />
@@ -241,6 +264,7 @@ export default function Dashboard() {
           </div>
         )}
       </motion.section>
-    </motion.div>
+      </motion.div>
+    </>
   );
 }
