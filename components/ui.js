@@ -12,7 +12,7 @@ export default function Badge({ children, color = "slate" }) {
 }
 
 export function EmptyState({ text = "Belum ada data." }) {
-  return <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center text-sm text-slate-400">{text}</div>;
+  return <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-10 text-center text-sm text-slate-500">{text}</div>;
 }
 
 export function Spinner() {

@@ -166,7 +166,7 @@ Paletnya tenang dan hemat: satu aksen biru-ungu di atas netral slate kalem, dita
 
 ## Typography
 
-**Display Font:** Bricolage Grotesque (dengan fallback `Inter, ui-sans-serif, system-ui, sans-serif`) — untuk judul hero/merek (halaman login, panggung merek).
+**Display Font:** Bricolage Grotesque (dengan fallback `Inter, ui-sans-serif, system-ui, sans-serif`) — untuk judul hero/merek (halaman login, panggung merek), judul halaman dalam, dan angka statistik besar (mis. saldo kas pada struk dashboard).
 **Body Font:** Inter (dengan `ui-sans-serif, system-ui, sans-serif`) — seluruh UI produk.
 **Label/Mono Font:** — tidak ada font terpisah.
 
@@ -181,7 +181,7 @@ Paletnya tenang dan hemat: satu aksen biru-ungu di atas netral slate kalem, dita
 - **Badge** (600, 12px): teks chip status — satu-satunya ukuran di bawah body.
 
 ### Named Rules
-**The Two-Family Rule.** Bricolage Grotesque hanya untuk display/brand (judul hero, logo wordmark); Inter untuk semua UI produk. Tidak ada font ketiga, tidak ada italic dekoratif — judul UI dibedakan dengan berat (800) dan tracking negatif.
+**The Two-Family Rule.** Bricolage Grotesque hanya untuk display/brand (judul hero, logo wordmark, judul halaman, angka statistik besar); Inter untuk semua UI produk. Tidak ada font ketiga, tidak ada italic dekoratif — judul UI dibedakan dengan berat (800) dan tracking negatif.
 
 ## Layout
 

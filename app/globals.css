@@ -20,6 +20,10 @@ html.dark .bg-indigo-50 { background-color: rgba(99, 102, 241, 0.15); }
 html.dark .bg-emerald-50 { background-color: rgba(16, 185, 129, 0.15); }
 html.dark .bg-rose-50 { background-color: rgba(244, 63, 94, 0.15); }
 html.dark .bg-orange-50 { background-color: rgba(249, 115, 22, 0.15); }
+html.dark .bg-amber-50 { background-color: rgba(245, 158, 11, 0.14); }
+html.dark .border-amber-300 { border-color: rgba(245, 158, 11, 0.35); }
+html.dark .text-amber-900, html.dark .text-amber-800 { color: #FCD34D; }
+html.dark .text-amber-700 { color: #FBBF24; }
 html.dark .border-slate-200, html.dark .border-slate-100, html.dark .border-slate-300 { border-color: #334155; }
 html.dark .text-slate-900, html.dark .text-slate-800 { color: #F1F5F9; }
 html.dark .text-slate-700 { color: #E2E8F0; }
