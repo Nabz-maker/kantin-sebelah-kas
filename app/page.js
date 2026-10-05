@@ -88,7 +88,7 @@ export default function Landing() {
           </nav>
           <div className="flex items-center gap-2">
             <Link href="/login" className="rounded-xl px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-white/10">Login</Link>
-            <Link href="/register" className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500">Mulai Sekarang</Link>
+            <Link href="/login" className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500">Login dulu woi</Link>
           </div>
         </div>
       </header>
@@ -123,8 +123,8 @@ export default function Landing() {
             </motion.p>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }} className="mt-8 flex flex-wrap gap-3">
-              <Link href="/register" className="group inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-3.5 text-sm font-semibold text-white shadow-xl shadow-black/40 transition hover:bg-indigo-500 active:scale-[0.98]">
-                Mulai Gratis <ArrowRight size={16} className="transition group-hover:translate-x-1" />
+              <Link href="/login" className="group inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-3.5 text-sm font-semibold text-white shadow-xl shadow-black/40 transition hover:bg-indigo-500 active:scale-[0.98]">
+                Login dulu woi <ArrowRight size={16} className="transition group-hover:translate-x-1" />
               </Link>
               <a href="#cara-kerja" className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10">
                 Lihat cara kerja
@@ -233,8 +233,8 @@ export default function Landing() {
               <p className="mx-auto mt-3 max-w-md text-sm text-slate-300">
                 Buat akun sekarang dan catat transaksi pertama Anda hari ini juga.
               </p>
-              <Link href="/register" className="group mt-7 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-black/40 transition hover:bg-indigo-500 active:scale-[0.98]">
-                Mulai Gratis <ArrowRight size={16} className="transition group-hover:translate-x-1" />
+              <Link href="/login" className="group mt-7 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-black/40 transition hover:bg-indigo-500 active:scale-[0.98]">
+                Login dulu woi <ArrowRight size={16} className="transition group-hover:translate-x-1" />
               </Link>
             </div>
           </motion.div>
