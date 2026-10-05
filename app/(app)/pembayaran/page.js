@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, Fragment } from "react";
 import Badge, { Spinner, EmptyState, inputCls, btnPrimary } from "@/components/ui";
 import { toast } from "@/components/ToastHost";
 import { rupiah, formatDate, bulanName } from "@/lib/utils";
@@ -51,6 +51,18 @@ export default function Pembayaran() {
 
   const statusBadge = (s) => s === "lunas" ? <Badge color="green">Sudah Bayar</Badge> : s === "terlambat" ? <Badge color="orange">Terlambat</Badge> : <Badge color="red">Belum Bayar</Badge>;
 
+  // Kelompokkan tagihan per periode agar tampilan admin tidak menumpuk
+  const groups = Object.values(
+    (items || []).reduce((acc, p) => {
+      const key = `${p.year}-${p.month}-${p.week || 0}-${p.description || ""}`;
+      acc[key] = acc[key] || { key, year: p.year, month: p.month, week: p.week, description: p.description, amount: p.amount, rows: [] };
+      acc[key].rows.push(p);
+      return acc;
+    }, {})
+  );
+  const [openGroups, setOpenGroups] = useState({});
+  const toggleGroup = (key) => setOpenGroups((c) => ({ ...c, [key]: !c[key] }));
+
   return (
     <div className="space-y-5">
       <h1 className="text-xl font-extrabold tracking-tight">Pembayaran Kas</h1>
@@ -87,7 +99,38 @@ export default function Pembayaran() {
                 <th className="px-5 py-3">Status</th><th className="px-5 py-3">Tanggal Bayar</th>{isAdmin && <th className="px-5 py-3">Aksi</th>}
               </tr></thead>
               <tbody>
-                {items.map((p) => (
+                {isAdmin ? groups.map((g) => {
+                  const lunas = g.rows.filter((r) => r.status === "lunas").length;
+                  return (
+                    <Fragment key={g.key}>
+                      <tr className="cursor-pointer border-t border-slate-50 hover:bg-slate-50" onClick={() => toggleGroup(g.key)}>
+                        <td className="px-5 py-3 font-medium">{g.rows.length} anggota</td>
+                        <td className="px-5 py-3 text-slate-500">{g.week ? `Minggu ke-${g.week}, ` : ""}{bulanName(g.month)} {g.year}</td>
+                        <td className="px-5 py-3 font-semibold">{rupiah(g.amount)}</td>
+                        <td className="px-5 py-3 text-slate-500">{g.description || "-"}</td>
+                        <td className="px-5 py-3"><Badge color={lunas === g.rows.length ? "green" : "red"}>{lunas}/{g.rows.length} lunas</Badge></td>
+                        <td className="px-5 py-3 text-slate-400">{openGroups[g.key] ? "▲" : "▼"}</td>
+                        <td className="px-5 py-3"></td>
+                      </tr>
+                      {openGroups[g.key] && g.rows.map((p) => (
+                        <tr key={p.id} className="border-t border-slate-50 bg-slate-50/50">
+                          <td className="px-5 py-3 pl-10 font-medium">{p.user?.name}</td>
+                          <td className="px-5 py-3 text-slate-500">{p.week ? `Minggu ke-${p.week}, ` : ""}{bulanName(p.month)} {p.year}</td>
+                          <td className="px-5 py-3 font-semibold">{rupiah(p.amount)}</td>
+                          <td className="px-5 py-3 text-slate-500">{p.description || "-"}</td>
+                          <td className="px-5 py-3">{statusBadge(p.status)}</td>
+                          <td className="px-5 py-3 text-slate-500">{formatDate(p.paidAt)}</td>
+                          <td className="px-5 py-3">
+                            {p.status !== "lunas" && <button onClick={() => setStatus(p.id, "lunas")} className="mr-2 text-sm font-semibold text-emerald-600">Tandai Lunas</button>}
+                            {p.status === "belum" && <button onClick={() => setStatus(p.id, "terlambat")} className="text-sm font-semibold text-orange-600">Terlambat</button>}
+                            {p.status !== "belum" && <button onClick={() => setStatus(p.id, "belum")} className="text-sm font-semibold text-slate-500">Reset</button>}
+                            <button onClick={() => removePayment(p.id)} className="ml-2 text-sm font-semibold text-rose-600">Hapus</button>
+                          </td>
+                        </tr>
+                      ))}
+                    </Fragment>
+                  );
+                }) : items.map((p) => (
                   <tr key={p.id} className="border-t border-slate-50">
                     <td className="px-5 py-3 font-medium">{p.user?.name}</td>
                     <td className="px-5 py-3 text-slate-500">{p.week ? `Minggu ke-${p.week}, ` : ""}{bulanName(p.month)} {p.year}</td>
@@ -95,15 +138,9 @@ export default function Pembayaran() {
                     <td className="px-5 py-3 text-slate-500">{p.description || "-"}</td>
                     <td className="px-5 py-3">{statusBadge(p.status)}</td>
                     <td className="px-5 py-3 text-slate-500">{formatDate(p.paidAt)}</td>
-                    {isAdmin && <td className="px-5 py-3">
-                      {p.status !== "lunas" && <button onClick={() => setStatus(p.id, "lunas")} className="mr-2 text-sm font-semibold text-emerald-600">Tandai Lunas</button>}
-                      {p.status === "belum" && <button onClick={() => setStatus(p.id, "terlambat")} className="text-sm font-semibold text-orange-600">Terlambat</button>}
-                      {p.status !== "belum" && <button onClick={() => setStatus(p.id, "belum")} className="text-sm font-semibold text-slate-500">Reset</button>}
-                      <button onClick={() => removePayment(p.id)} className="ml-2 text-sm font-semibold text-rose-600">Hapus</button>
-                    </td>}
                   </tr>
                 ))}
-              </tbody>
+                </tbody>
             </table>
           </div>
         </div>
