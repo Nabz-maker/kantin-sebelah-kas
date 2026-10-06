@@ -3,18 +3,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-// Recharts dilazy-load agar bundle awal ringan di Android,
-// tapi animasi grafik tetap menyala seperti semula.
-const BarChart = dynamic(() => import("recharts").then((m) => m.BarChart), { ssr: false });
-const Bar = dynamic(() => import("recharts").then((m) => m.Bar), { ssr: false });
-const LineChart = dynamic(() => import("recharts").then((m) => m.LineChart), { ssr: false });
-const Line = dynamic(() => import("recharts").then((m) => m.Line), { ssr: false });
-const Area = dynamic(() => import("recharts").then((m) => m.Area), { ssr: false });
-const XAxis = dynamic(() => import("recharts").then((m) => m.XAxis), { ssr: false });
-const YAxis = dynamic(() => import("recharts").then((m) => m.YAxis), { ssr: false });
-const Tooltip = dynamic(() => import("recharts").then((m) => m.Tooltip), { ssr: false });
-const ResponsiveContainer = dynamic(() => import("recharts").then((m) => m.ResponsiveContainer), { ssr: false });
-const CartesianGrid = dynamic(() => import("recharts").then((m) => m.CartesianGrid), { ssr: false });
+// Grafik di-lazy-load agar bundle awal ringan di Android — yang dibungkus
+// seluruh modul grafiknya, bukan komponen recharts satu per satu.
+const Charts = dynamic(() => import("@/components/charts"), { ssr: false });
 import { motion } from "framer-motion";
 import { ArrowRight, BellRing } from "lucide-react";
 import Badge, { Spinner, EmptyState } from "@/components/ui";
@@ -31,30 +22,6 @@ const RANGE_COPY = {
 
 const rise = { hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } };
 const stagger = { show: { transition: { staggerChildren: 0.06 } } };
-
-const axisTick = { fontSize: 11, fill: "#64748B" };
-
-function rupiahAxis(v) {
-  if (Math.abs(v) >= 1000000) return `${(v / 1000000).toFixed(1).replace(".0", "")}jt`;
-  if (Math.abs(v) >= 1000) return `${Math.round(v / 1000)}rb`;
-  return v;
-}
-
-function ChartTip({ active, payload, label }) {
-  if (!active || !payload?.length) return null;
-  return (
-    <div className="rounded-xl border border-white/10 bg-slate-900 px-3 py-2 shadow-lg">
-      <p className="text-xs font-semibold text-white">{label}</p>
-      {payload.map((p) => (
-        <p key={p.dataKey} className="mt-1 flex items-center gap-2 text-xs">
-          <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: p.color || p.stroke || "#4F46E5" }} />
-          <span className="capitalize text-slate-300">{p.dataKey}</span>
-          <span className="ml-2 font-semibold tabular-nums text-white">{rupiah(p.value)}</span>
-        </p>
-      ))}
-    </div>
-  );
-}
 
 function VideoIntro() {
   const [show, setShow] = useState(() => {
@@ -182,54 +149,7 @@ export default function Dashboard() {
 
       {/* Grafik */}
       <motion.section variants={rise} className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-        <div className="grid lg:grid-cols-2">
-          <div className="p-5 lg:border-r lg:border-slate-100">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-              <h2 className="font-bold text-slate-900">Pemasukan vs Pengeluaran</h2>
-              <div className="flex items-center gap-3 text-xs text-slate-500">
-                <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-emerald-500" />Pemasukan</span>
-                <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-rose-500" />Pengeluaran</span>
-              </div>
-            </div>
-            <div className="h-64">
-              <ResponsiveContainer>
-                <BarChart data={chart} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
-                  <CartesianGrid stroke="#94A3B8" strokeOpacity={0.25} vertical={false} />
-                  <XAxis dataKey="label" tick={axisTick} tickLine={false} axisLine={false} minTickGap={16} />
-                  <YAxis tick={axisTick} tickLine={false} axisLine={false} width={52} tickFormatter={rupiahAxis} />
-                  <Tooltip cursor={{ fill: "#94A3B8", fillOpacity: 0.12 }} content={<ChartTip />} />
-                  <Bar dataKey="pemasukan" fill="#10B981" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="pengeluaran" fill="#F43F5E" radius={[6, 6, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          <div className="border-t border-slate-100 p-5">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-              <h2 className="font-bold text-slate-900">Perkembangan Saldo</h2>
-              <span className="text-xs text-slate-500">Saldo berjalan</span>
-            </div>
-            <div className="h-64">
-              <ResponsiveContainer>
-                <LineChart data={trend} margin={{ top: 4, right: 8, bottom: 0, left: 0 }}>
-                  <defs>
-                    <linearGradient id="saldoFill" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#6366F1" stopOpacity={0.35} />
-                      <stop offset="100%" stopColor="#6366F1" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid stroke="#94A3B8" strokeOpacity={0.25} vertical={false} />
-                  <XAxis dataKey="date" tick={axisTick} tickLine={false} axisLine={false} minTickGap={24} />
-                  <YAxis tick={axisTick} tickLine={false} axisLine={false} width={52} tickFormatter={rupiahAxis} />
-                  <Tooltip content={<ChartTip />} />
-                  <Area type="monotone" dataKey="saldo" stroke="none" fill="url(#saldoFill)" />
-                  <Line type="monotone" dataKey="saldo" stroke="#4F46E5" strokeWidth={2.5} dot={false} activeDot={{ r: 4, strokeWidth: 0 }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </div>
+        <Charts variant="split" data={chart} trend={trend} range={range} />
       </motion.section>
 
       {/* Transaksi terbaru */}

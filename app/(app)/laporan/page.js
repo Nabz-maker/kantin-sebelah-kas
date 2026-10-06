@@ -5,14 +5,9 @@ import { Spinner, btnPrimary } from "@/components/ui";
 import { rupiah, formatDate } from "@/lib/utils";
 import { toast } from "@/components/ToastHost";
 
-const BarChart = dynamic(() => import("recharts").then((m) => m.BarChart), { ssr: false });
-const Bar = dynamic(() => import("recharts").then((m) => m.Bar), { ssr: false });
-const XAxis = dynamic(() => import("recharts").then((m) => m.XAxis), { ssr: false });
-const YAxis = dynamic(() => import("recharts").then((m) => m.YAxis), { ssr: false });
-const Tooltip = dynamic(() => import("recharts").then((m) => m.Tooltip), { ssr: false });
-const Legend = dynamic(() => import("recharts").then((m) => m.Legend), { ssr: false });
-const ResponsiveContainer = dynamic(() => import("recharts").then((m) => m.ResponsiveContainer), { ssr: false });
-const CartesianGrid = dynamic(() => import("recharts").then((m) => m.CartesianGrid), { ssr: false });
+// Grafik di-lazy-load agar bundle awal ringan — seluruh modulnya,
+// jadi komponen recharts tetap diimpor statis di dalamnya.
+const Charts = dynamic(() => import("@/components/charts"), { ssr: false });
 
 export default function Laporan() {
   const [data, setData] = useState(null);
@@ -59,20 +54,7 @@ export default function Laporan() {
       </div>
 
       <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="mb-4 font-bold">Grafik Bulanan</h2>
-        <div className="h-64">
-          <ResponsiveContainer>
-            <BarChart data={data.chart}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
-              <XAxis dataKey="label" tick={{ fontSize: 11 }} />
-              <YAxis tick={{ fontSize: 11 }} />
-              <Tooltip formatter={(v) => rupiah(v)} />
-              <Legend />
-              <Bar dataKey="pemasukan" fill="#10B981" radius={[6, 6, 0, 0]} />
-              <Bar dataKey="pengeluaran" fill="#F43F5E" radius={[6, 6, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <Charts variant="cashflow" data={data.chart} range="month" />
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
