@@ -5,6 +5,8 @@ import { toast } from "@/components/ToastHost";
 
 export default function Pengaturan() {
   const [form, setForm] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [checking, setChecking] = useState(false);
 
   useEffect(() => { fetch("/api/settings").then((r) => r.json()).then((d) => setForm(d.setting)); }, []);
 
@@ -20,11 +22,30 @@ export default function Pengaturan() {
     reader.readAsDataURL(f);
   }
 
+  async function checkQris() {
+    if (!form.qrisString || form.qrisString === "••••") return toast("Tempel string QRIS terlebih dahulu.", false);
+    setChecking(true);
+    try {
+      const res = await fetch("/api/settings/qris-preview", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ qrisString: form.qrisString }),
+      });
+      const d = await res.json();
+      if (!res.ok) { setPreview(null); return toast(d.error || "QRIS tidak valid.", false); }
+      setPreview(d);
+      toast(`QRIS valid${d.merchant ? ` — ${d.merchant}` : ""}.`);
+    } finally { setChecking(false); }
+  }
+
   async function submit(e) {
     e.preventDefault();
     const res = await fetch("/api/settings", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, cashAmount: Number(form.cashAmount) }) });
-    if (res.ok) { toast("Pengaturan berhasil disimpan."); window.dispatchEvent(new Event("theme-changed")); }
-    else toast("Gagal menyimpan.", false);
+    const d = await res.json().catch(() => ({}));
+    if (res.ok) {
+      toast("Pengaturan berhasil disimpan.");
+      setForm(d.setting || form);
+      setPreview(null);
+      window.dispatchEvent(new Event("theme-changed"));
+    } else toast(d.error || "Gagal menyimpan.", false);
   }
 
   return (
@@ -43,6 +64,38 @@ export default function Pengaturan() {
             <select className={inputCls} value={form.theme} onChange={set("theme")}><option value="light">Terang</option><option value="dark">Gelap</option></select>
           </div>
         </div>
+
+        <hr className="border-slate-100" />
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-slate-600">Pembayaran QRIS</p>
+          <p className="text-xs text-slate-400">
+            Tempel <b>string QRIS</b> milik organisasi (bukan gambar). Ambil dari hasil scan QRIS sendiri
+            memakai aplikasi pembaca QR yang menampilkan isi teksnya. Nominal tagihan akan diisi otomatis.
+          </p>
+          <textarea
+            className={`${inputCls} font-mono text-xs`}
+            rows={5}
+            placeholder="00020101021126…6304ABCD"
+            value={form.qrisString && form.qrisString !== "••••" ? form.qrisString : ""}
+            onChange={set("qrisString")}
+          />
+          <div className="flex flex-wrap items-center gap-3">
+            <button type="button" onClick={checkQris} disabled={checking} className="rounded-xl border border-indigo-200 px-4 py-2 text-sm font-semibold text-indigo-700 hover:bg-indigo-50 disabled:opacity-60">
+              {checking ? "Memeriksa…" : "Validasi & Pratinjau"}
+            </button>
+            <label className="flex items-center gap-2 text-sm">
+              <input type="checkbox" checked={!!form.qrisEnabled} onChange={set("qrisEnabled")} /> Aktifkan pembayaran QRIS
+            </label>
+          </div>
+          {form.qrisMerchant && <p className="text-xs text-emerald-600">Merchant tersimpan: {form.qrisMerchant}</p>}
+          {preview && (
+            <div className="flex flex-col items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <img src={preview.qrDataUrl} alt="Pratinjau QRIS" className="h-52 w-52 rounded-lg bg-white" />
+              <p className="text-xs text-slate-500">{preview.merchant || "Merchant"}{preview.city ? ` · ${preview.city}` : ""} · contoh nominal Rp 1.000</p>
+            </div>
+          )}
+        </div>
+
         <hr className="border-slate-100" />
         <p className="text-sm font-semibold text-slate-600">Notifikasi</p>
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!form.notifTx} onChange={set("notifTx")} /> Notifikasi transaksi baru</label>

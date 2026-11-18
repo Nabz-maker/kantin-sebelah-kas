@@ -32,6 +32,7 @@ Kas organisasi yang transparan bagi anggota: bukan sekadar pencatatan oleh admin
 
 - Peran admin & member; endpoint dan kontrol admin dibatasi role.
 - Fitur: dashboard statistik, transaksi, pembayaran/tagihan mingguan, laporan, manajemen anggota, log aktivitas login (admin), notifikasi tagihan, tema gelap/terang, PWA installable.
+- Pembayaran QRIS: admin menyimpan string QRIS merchant di Pengaturan; anggota membayar lewat QR dinamis bernominal otomatis, bukti bayar opsional, lalu admin memverifikasi (status menunggu → lunas).
 - Bahasa antarmuka: Indonesia.
 - Rencana platform native (Android/iOS) belum diputuskan — saat ini web.
 

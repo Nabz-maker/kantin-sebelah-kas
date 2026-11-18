@@ -46,7 +46,12 @@ model CashPayment {
   week      Int      @default(0) // 0 = bulanan, 1-53 = minggu ke-
   amount    Int
   description String?
-  status    String   @default("belum") // lunas | belum | terlambat
+  status    String   @default("belum") // lunas | belum | terlambat | menunggu
+  proof     String?  // bukti bayar (data URL), opsional
+  submitNote String?
+  submittedAt DateTime?
+  verifiedBy String?
+  verifiedAt DateTime?
   paidAt    DateTime?
   createdAt DateTime @default(now())
 
@@ -70,6 +75,9 @@ model Setting {
   theme            String  @default("dark")
   notifTx          Boolean @default(true)
   notifPayment     Boolean @default(true)
+  qrisString       String? // payload QRIS statis merchant
+  qrisEnabled      Boolean @default(false)
+  qrisMerchant     String?
 }
 
 model Notification {

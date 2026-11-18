@@ -26,7 +26,9 @@ export async function GET(req) {
     include: { user: { select: { name: true, username: true } } },
     orderBy: [{ year: "desc" }, { month: "desc" }, { week: "asc" }, { user: { name: "asc" } }],
   });
-  return NextResponse.json({ items });
+  // Bukti bayar hanya dikirim ke admin (bisa berukuran besar).
+  const payload = s.role === "admin" ? items : items.map(({ proof, ...rest }) => rest);
+  return NextResponse.json({ items: payload });
 }
 
 // POST: admin generate tagihan bulan tertentu untuk semua member aktif
@@ -92,10 +94,34 @@ export async function PATCH(req) {
   if (!s || s.role !== "admin") return NextResponse.json({ error: "Hanya admin." }, { status: 403 });
   const { id, status } = await req.json().catch(() => ({}));
   if (!id || !["lunas", "belum", "terlambat"].includes(status)) return NextResponse.json({ error: "Data tidak valid." }, { status: 400 });
+
+  const before = await prisma.cashPayment.findUnique({ where: { id } });
+  if (!before) return NextResponse.json({ error: "Data tidak ditemukan." }, { status: 404 });
+
   const p = await prisma.cashPayment.update({
     where: { id },
-    data: { status, paidAt: status === "lunas" ? new Date() : null },
+    data: {
+      status,
+      paidAt: status === "lunas" ? new Date() : null,
+      verifiedBy: status === "lunas" ? s.name || "Admin" : null,
+      verifiedAt: status === "lunas" ? new Date() : null,
+    },
   });
+
+  const periode = p.week ? `minggu ke-${p.week} ${p.month}/${p.year}` : `${p.month}/${p.year}`;
+  // Kabari anggota saat laporan mereka diverifikasi atau ditolak.
+  if (before.status === "menunggu") {
+    await prisma.notification.create({
+      data: {
+        userId: p.userId,
+        text:
+          status === "lunas"
+            ? `Pembayaran kas ${periode} sebesar Rp ${p.amount.toLocaleString("id-ID")} sudah diverifikasi lunas. Terima kasih!`
+            : `Pembayaran kas ${periode} ditolak admin. Silakan periksa bukti dan kirim ulang.`,
+      },
+    });
+  }
+
   // Jika lunas → catat pemasukan otomatis; jika direset/ubah → hapus transaksi yang dulu dibuat
   const expectedDesc = p.week ? `Pembayaran kas minggu ke-${p.week} ${p.month}/${p.year}` : `Pembayaran kas ${p.month}/${p.year}`;
   if (status === "lunas") {
@@ -119,3 +145,4 @@ export async function PATCH(req) {
   }
   return NextResponse.json({ ok: true, p });
 }
+
